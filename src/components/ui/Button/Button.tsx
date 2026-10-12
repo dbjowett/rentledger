@@ -25,7 +25,7 @@ export const buttonVariants = cva('flex-row items-center justify-center active:o
       pill: 'rounded-full',
       rounded: '',
     },
-    fullWidth: { true: 'self-stretch', false: 'self-start' },
+    fullWidth: { true: 'w-full self-stretch', false: 'self-start' },
     disabled: { true: 'opacity-50', false: '' },
   },
   compoundVariants: [

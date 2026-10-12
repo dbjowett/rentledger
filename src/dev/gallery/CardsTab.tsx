@@ -8,6 +8,7 @@ import {
   Card,
   CountBadge,
   IconButton,
+  SplitBar,
   Tag,
   Text,
   type CardProps,
@@ -100,6 +101,52 @@ export function CardsTab() {
               </View>
               <ChevronRight size={20} color={toneColor('muted')} />
             </View>
+          </Card>
+        </View>
+      </Section>
+
+      <Section title="SplitBar">
+        <View className="gap-3">
+          <Card>
+            <Card.Header title="October mortgage" className="mb-2" />
+            <Amount cents={212_000} size="2xl" />
+            <SplitBar
+              legend
+              className="mt-3"
+              segments={[
+                { key: 'interest', label: 'Interest', value: 131_200, tone: 'warning' },
+                { key: 'principal', label: 'Principal', value: 80_800, tone: 'accent' },
+              ]}
+            />
+          </Card>
+          <Card>
+            <Card.Header title="Expense split by unit" className="mb-2" />
+            <SplitBar
+              legend
+              segments={[
+                { key: 'u1', label: 'Unit 1', value: 40, tone: 'accent' },
+                { key: 'u2', label: 'Unit 2', value: 35, tone: 'violet' },
+                { key: 'u3', label: 'Basement', value: 20, tone: 'success' },
+                { key: 'own', label: 'Personal use', value: 5, tone: 'muted' },
+              ]}
+            />
+          </Card>
+          <Card>
+            <Text size="sm" tone="grey" className="mb-2">
+              size sm, tiny segment, zero filtered out
+            </Text>
+            <SplitBar
+              size="sm"
+              segments={[
+                { key: 'a', value: 97, tone: 'success' },
+                { key: 'b', value: 3, tone: 'danger' },
+                { key: 'c', value: 0, tone: 'slate' },
+              ]}
+            />
+            <Text size="sm" tone="grey" className="mb-2 mt-4">
+              empty (all zero)
+            </Text>
+            <SplitBar segments={[{ key: 'a', value: 0, tone: 'accent' }]} />
           </Card>
         </View>
       </Section>

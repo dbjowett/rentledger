@@ -5,8 +5,11 @@ import { Pressable, ScrollView, View } from 'react-native';
 import { Text } from '@/components/ui';
 import { ButtonsTab } from '@/dev/gallery/ButtonsTab';
 import { CardsTab } from '@/dev/gallery/CardsTab';
+import { FeaturesTab } from '@/dev/gallery/FeaturesTab';
 import { FoundationsTab } from '@/dev/gallery/FoundationsTab';
+import { InputsTab } from '@/dev/gallery/InputsTab';
 import { ListsTab } from '@/dev/gallery/ListsTab';
+import { OverlaysTab } from '@/dev/gallery/OverlaysTab';
 import { TagsTab } from '@/dev/gallery/TagsTab';
 import { TextTab } from '@/dev/gallery/TextTab';
 import { cn } from '@/lib/cn';
@@ -19,6 +22,9 @@ const tabs = [
   { key: 'tags', label: 'Tags', Content: TagsTab },
   { key: 'cards', label: 'Cards', Content: CardsTab },
   { key: 'lists', label: 'Lists', Content: ListsTab },
+  { key: 'inputs', label: 'Inputs', Content: InputsTab },
+  { key: 'overlays', label: 'Overlays', Content: OverlaysTab },
+  { key: 'features', label: 'Features', Content: FeaturesTab },
 ] as const;
 
 type TabKey = (typeof tabs)[number]['key'];

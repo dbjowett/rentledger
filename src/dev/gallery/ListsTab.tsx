@@ -1,10 +1,11 @@
-import { Building2, Wrench } from 'lucide-react-native';
+import { Building2, Receipt, Search, Wrench } from 'lucide-react-native';
 import { View } from 'react-native';
 
 import {
   Amount,
   Button,
   Card,
+  EmptyState,
   IconTile,
   ListRow,
   Tag,
@@ -114,6 +115,62 @@ export function ListsTab() {
             trailing={<Amount cents={2_500_000} hideCents />}
           />
         </Card>
+      </Section>
+
+      <Section title="EmptyState">
+        <View className="gap-4">
+          <View>
+            <Label>outline, icon media, primary + link actions</Label>
+            <EmptyState variant="outline">
+              <EmptyState.Header>
+                <EmptyState.Media variant="icon" icon={Receipt} tone="warning" />
+                <EmptyState.Title>No receipts yet</EmptyState.Title>
+                <EmptyState.Description>
+                  Snap a photo of a receipt and we will match it to an expense for your T776.
+                </EmptyState.Description>
+              </EmptyState.Header>
+              <EmptyState.Content>
+                <Button label="Add receipt" />
+                <Button variant="link" size="sm" label="How matching works" />
+              </EmptyState.Content>
+            </EmptyState>
+          </View>
+          <View>
+            <Label>plain, inside a card</Label>
+            <Card>
+              <EmptyState className="p-2">
+                <EmptyState.Header>
+                  <EmptyState.Media variant="icon" icon={Building2} />
+                  <EmptyState.Title>Add your first property</EmptyState.Title>
+                  <EmptyState.Description>
+                    Properties hold your units, tenants and the rent you expect each month.
+                  </EmptyState.Description>
+                </EmptyState.Header>
+                <EmptyState.Content>
+                  <Button fullWidth shape="rounded" size="lg" label="Add property" />
+                </EmptyState.Content>
+              </EmptyState>
+            </Card>
+          </View>
+          <View>
+            <Label>no action, default media with custom children</Label>
+            <EmptyState>
+              <EmptyState.Header>
+                <EmptyState.Media>
+                  <View className="flex-row gap-2">
+                    <IconTile size={36} tone="slate" icon={Search} />
+                    <IconTile size={36} kind="receipt" />
+                    <IconTile size={36} kind="bill" />
+                  </View>
+                </EmptyState.Media>
+                <EmptyState.Title>No matches for “hydro”</EmptyState.Title>
+                <EmptyState.Description>
+                  Try a different search or clear the filters.
+                </EmptyState.Description>
+              </EmptyState.Header>
+            </EmptyState>
+          </View>
+        </View>
       </Section>
 
       <Section title="ListRow · edge cases">

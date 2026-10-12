@@ -2,6 +2,7 @@ import { View } from 'react-native';
 
 import {
   Amount,
+  SectionHeader,
   Text,
   type AmountProps,
   type TextSize,
@@ -62,6 +63,21 @@ export function TextTab() {
           <Text weight="medium" tone="white">
             white
           </Text>
+        </View>
+      </Section>
+
+      <Section title="SectionHeader">
+        <View className="rounded-card bg-card p-4">
+          <SectionHeader
+            title="Recent entries"
+            action={{ label: 'See all', onPress: () => undefined }}
+          />
+          <SectionHeader title="Properties" />
+          <SectionHeader
+            title="A long section title that truncates before the action"
+            action={{ label: 'Edit', onPress: () => undefined }}
+            className="mb-0"
+          />
         </View>
       </Section>
 

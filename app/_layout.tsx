@@ -7,12 +7,16 @@ import {
   Inter_700Bold,
 } from '@expo-google-fonts/inter';
 import { IBMPlexMono_600SemiBold } from '@expo-google-fonts/ibm-plex-mono';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+
+import { ToastProvider } from '@/components/ui';
 
 void SplashScreen.preventAutoHideAsync();
 
@@ -32,9 +36,15 @@ export default function RootLayout() {
   if (!loaded && !error) return null;
 
   return (
-    <SafeAreaProvider>
-      <Stack />
-      <StatusBar style="dark" />
-    </SafeAreaProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <ToastProvider>
+          <BottomSheetModalProvider>
+            <Stack />
+            <StatusBar style="dark" />
+          </BottomSheetModalProvider>
+        </ToastProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }

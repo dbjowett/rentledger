@@ -1,14 +1,12 @@
 import type { ReactNode } from 'react';
 import { View } from 'react-native';
 
-import { Text } from '@/components/ui';
+import { SectionHeader, Text } from '@/components/ui';
 
 export function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
     <View className="mb-8">
-      <Text size="2xl" weight="bold" className="mb-3">
-        {title}
-      </Text>
+      <SectionHeader title={title} />
       {children}
     </View>
   );

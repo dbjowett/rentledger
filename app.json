@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "my-expo-app",
-    "slug": "my-expo-app",
+    "name": "Rent Ledger",
+    "slug": "rentledger",
     "version": "1.0.0",
     "web": {
       "favicon": "./assets/favicon.png"
@@ -32,8 +32,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.dbjowett.rentaltracker"
+      "package": "com.dbjowett.rentledger"
     },
-    "scheme": "rentaltracker"
+    "scheme": "rentledger"
   }
 }
