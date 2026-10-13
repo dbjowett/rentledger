@@ -128,3 +128,5 @@ export {
 export type { ToastAction, ToastOptions } from './Toast/Toast';
 export { Text, textVariants } from './Text/Text';
 export type { TextProps, TextSize, TextTone, TextWeight } from './Text/Text';
+export { TabBar, tabBarActionVariants, tabBarItemVariants, tabBarVariants } from './TabBar/TabBar';
+export type { TabBarAction, TabBarItem, TabBarProps } from './TabBar/TabBar';

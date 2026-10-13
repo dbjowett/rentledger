@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import { Link, Stack } from 'expo-router';
+import { Link } from 'expo-router';
 
 import { Avatar, Button, Card, Text } from '@/components/ui';
 import { useAuth } from '@/features/auth/AuthProvider';
@@ -12,7 +12,6 @@ export default function Home() {
 
   return (
     <View className="flex-1 gap-4 bg-surface p-5">
-      <Stack.Screen options={{ title: 'Rent Ledger' }} />
       <Card>
         <View className="flex-row items-center gap-4">
           <Avatar size="lg" name={profile?.name ?? null} imageUrl={profile?.avatarUrl} />

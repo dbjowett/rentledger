@@ -47,10 +47,8 @@ function TimeZoneSection() {
           meta={zoneMeta(savedZone, me.isPending)}
         />
       </Card>
-      <Text size="base" tone="grey" className="mt-3">
-        Rent due dates, late notices and the tax year an income or expense belongs to are worked out
-        in this time zone. It's set from your phone when you sign in, and it won't change if you
-        travel.
+      <Text size="sm" tone="grey" className="mt-2">
+        Used for due dates and tax years. Stays put when you travel.
       </Text>
 
       {showPhoneHint ? (
