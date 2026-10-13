@@ -13,12 +13,39 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { ToastProvider } from '@/components/ui';
+import { AuthProvider, useAuth } from '@/features/auth/AuthProvider';
+import { queryClient } from '@/lib/queryClient';
 
 void SplashScreen.preventAutoHideAsync();
+
+function RootNavigator() {
+  const { session, loading } = useAuth();
+
+  useEffect(() => {
+    if (!loading) void SplashScreen.hideAsync();
+  }, [loading]);
+
+  if (loading) return null;
+
+  const signedIn = session !== null;
+
+  return (
+    <Stack>
+      <Stack.Protected guard={signedIn}>
+        <Stack.Screen name="(app)" options={{ headerShown: false }} />
+      </Stack.Protected>
+      <Stack.Protected guard={!signedIn}>
+        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+      </Stack.Protected>
+      <Stack.Screen name="(dev)/gallery" options={{ title: 'Gallery' }} />
+    </Stack>
+  );
+}
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -29,21 +56,21 @@ export default function RootLayout() {
     IBMPlexMono_600SemiBold,
   });
 
-  useEffect(() => {
-    if (loaded || error) void SplashScreen.hideAsync();
-  }, [loaded, error]);
-
   if (!loaded && !error) return null;
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
-        <ToastProvider>
-          <BottomSheetModalProvider>
-            <Stack />
-            <StatusBar style="dark" />
-          </BottomSheetModalProvider>
-        </ToastProvider>
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>
+            <ToastProvider>
+              <BottomSheetModalProvider>
+                <RootNavigator />
+                <StatusBar style="dark" />
+              </BottomSheetModalProvider>
+            </ToastProvider>
+          </AuthProvider>
+        </QueryClientProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );

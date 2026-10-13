@@ -32,7 +32,14 @@ const sorting = {
 export default defineConfig({
   singleQuote: true,
   printWidth: 100,
-  ignorePatterns: ['pnpm-lock.yaml', '.expo/**', 'android/**', 'ios/**', 'dist/**'],
+  ignorePatterns: [
+    'pnpm-lock.yaml',
+    '.expo/**',
+    'android/**',
+    'ios/**',
+    'dist/**',
+    'src/shared/database.types.ts',
+  ],
 
   ...sorting,
 });

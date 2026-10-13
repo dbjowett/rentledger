@@ -29,6 +29,10 @@ const overrides: OxlintOverride[] = [
     files: ['src/components/ui/Text/Text.tsx', 'src/dev/gallery/FoundationsTab.tsx'],
     rules: { 'no-restricted-imports': 'off' },
   },
+  {
+    files: ['**/*.d.ts'],
+    rules: { 'typescript/consistent-type-definitions': 'off' },
+  },
 ];
 
 export default defineConfig({
@@ -49,6 +53,13 @@ export default defineConfig({
   },
   env: { builtin: true, es2024: true },
   globals: { __DEV__: 'readonly' },
-  ignorePatterns: ['.expo/**', 'android/**', 'ios/**', 'dist/**', 'expo-env.d.ts'],
+  ignorePatterns: [
+    '.expo/**',
+    'android/**',
+    'ios/**',
+    'dist/**',
+    'expo-env.d.ts',
+    'src/shared/database.types.ts',
+  ],
   overrides,
 });
