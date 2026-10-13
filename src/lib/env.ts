@@ -12,6 +12,7 @@ const env = {
     'EXPO_PUBLIC_SUPABASE_ANON_KEY',
     process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY,
   ),
+  apiUrl: required('EXPO_PUBLIC_API_URL', process.env.EXPO_PUBLIC_API_URL).replace(/\/+$/, ''),
   googleWebClientId: required(
     'EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID',
     process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,

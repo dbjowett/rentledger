@@ -3,6 +3,7 @@ import { Building2, Receipt, Search, Wrench } from 'lucide-react-native';
 
 import {
   Amount,
+  Avatar,
   Button,
   Card,
   EmptyState,
@@ -115,6 +116,34 @@ export function ListsTab() {
             trailing={<Amount cents={2_500_000} hideCents />}
           />
         </Card>
+      </Section>
+
+      <Section title="Avatar">
+        <Label>image, initials fallback, broken image, no name</Label>
+        <Row>
+          <Avatar size="lg" name="Jordan Lee" imageUrl="https://i.pravatar.cc/256?img=12" />
+          <Avatar size="lg" name="Jordan Lee" />
+          <Avatar size="lg" name="Priya" imageUrl="https://example.invalid/missing.png" />
+          <Avatar size="lg" name={null} />
+        </Row>
+        <Label>fallback="icon" (profile button)</Label>
+        <Row>
+          <Avatar size="sm" fallback="icon" name="Jordan Lee" />
+          <Avatar size="md" fallback="icon" name="Jordan Lee" />
+          <Avatar size="lg" fallback="icon" name={null} />
+          <Avatar
+            size="md"
+            fallback="icon"
+            name="Jordan Lee"
+            imageUrl="https://i.pravatar.cc/256?img=12"
+          />
+        </Row>
+        <Label>sizes</Label>
+        <Row>
+          <Avatar size="sm" name="Jordan Lee" />
+          <Avatar size="md" name="Jordan Lee" />
+          <Avatar size="lg" name="Jordan Lee" />
+        </Row>
       </Section>
 
       <Section title="EmptyState">

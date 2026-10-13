@@ -1,5 +1,7 @@
 export { Amount, amountTextVariants, formatCents } from './Amount/Amount';
 export type { AmountKind, AmountProps } from './Amount/Amount';
+export { Avatar, avatarTextVariants, avatarVariants } from './Avatar/Avatar';
+export type { AvatarFallback, AvatarProps, AvatarSize } from './Avatar/Avatar';
 export { Button, buttonTextVariants, buttonVariants } from './Button/Button';
 export type { ButtonProps } from './Button/Button';
 export { Card, cardHeaderTextVariants, cardHeaderVariants, cardVariants } from './Card/Card';
@@ -89,13 +91,15 @@ export type {
 } from './SplitBar/SplitBar';
 export {
   Sheet,
+  SheetFlatList,
+  SheetSectionList,
   sheetBackgroundVariants,
   sheetFooterVariants,
   sheetHandleVariants,
   sheetHeaderVariants,
   sheetTitleTextVariants,
 } from './Sheet/Sheet';
-export type { SheetAction, SheetProps } from './Sheet/Sheet';
+export type { SheetAction, SheetProps, SheetSize } from './Sheet/Sheet';
 export { Stepper, stepperTextVariants, stepperVariants } from './Stepper/Stepper';
 export type { StepperProps } from './Stepper/Stepper';
 export { Switch, switchThumbVariants, switchTrackVariants } from './Switch/Switch';

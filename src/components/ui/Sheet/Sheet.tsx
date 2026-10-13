@@ -2,9 +2,11 @@ import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { View, type LayoutChangeEvent } from 'react-native';
 import {
   BottomSheetBackdrop,
+  BottomSheetFlatList,
   BottomSheetFooter,
   BottomSheetModal,
   BottomSheetScrollView,
+  BottomSheetSectionList,
   type BottomSheetBackdropProps,
   type BottomSheetBackgroundProps,
   type BottomSheetFooterProps,
@@ -29,6 +31,10 @@ type SheetAction = {
   disabled?: boolean;
 };
 
+type SheetSize = 'content' | 'full';
+
+const FULL_SNAP_POINTS = ['90%'];
+
 type SheetProps = {
   open: boolean;
   onClose: () => void;
@@ -38,6 +44,12 @@ type SheetProps = {
   action?: SheetAction;
   /** Pinned above the safe area while the content scrolls, e.g. the primary Button. */
   footer?: ReactNode;
+  /** Pinned under the header and never scrolls, e.g. a search field. */
+  toolbar?: ReactNode;
+  /** 'content' sizes to the content; 'full' keeps a fixed height so it never jumps as content changes. */
+  size?: SheetSize;
+  /** Set to false when the children bring their own SheetFlatList or SheetSectionList. */
+  scrollable?: boolean;
   children: ReactNode;
   contentClassName?: string;
 };
@@ -72,6 +84,9 @@ function Sheet({
   cancelLabel = 'Cancel',
   action,
   footer,
+  toolbar,
+  size = 'content',
+  scrollable = true,
   children,
   contentClassName,
 }: SheetProps) {
@@ -114,6 +129,32 @@ function Sheet({
 
   const hasFooter = footer != null;
 
+  const header = (
+    <View className="bg-card">
+      <SheetHandle />
+      <View className={sheetHeaderVariants()}>
+        <View className="flex-1 flex-row justify-start">
+          <Button variant="link" size="sm" label={cancelLabel} onPress={onClose} />
+        </View>
+        <Text accessibilityRole="header" numberOfLines={1} className={sheetTitleTextVariants()}>
+          {title}
+        </Text>
+        <View className="flex-1 flex-row justify-end">
+          {action && (
+            <Button
+              variant="link"
+              size="sm"
+              label={action.label}
+              disabled={action.disabled}
+              onPress={action.onPress}
+            />
+          )}
+        </View>
+      </View>
+      {toolbar == null ? null : <View className="px-screen pb-2">{toolbar}</View>}
+    </View>
+  );
+
   return (
     <BottomSheetModal
       ref={ref}
@@ -123,43 +164,36 @@ function Sheet({
       handleComponent={null}
       backdropComponent={SheetBackdrop}
       footerComponent={hasFooter ? renderFooter : undefined}
+      enableDynamicSizing={size === 'content'}
+      snapPoints={size === 'full' ? FULL_SNAP_POINTS : undefined}
       keyboardBehavior="interactive"
       keyboardBlurBehavior="restore"
       android_keyboardInputMode="adjustResize"
     >
-      <BottomSheetScrollView
-        stickyHeaderIndices={[0]}
-        contentContainerStyle={{
-          paddingBottom: hasFooter ? footerHeight + 16 : Math.max(insets.bottom, 16) + 8,
-        }}
-      >
-        <View className="bg-card">
-          <SheetHandle />
-          <View className={sheetHeaderVariants()}>
-            <View className="flex-1 flex-row justify-start">
-              <Button variant="link" size="sm" label={cancelLabel} onPress={onClose} />
-            </View>
-            <Text accessibilityRole="header" numberOfLines={1} className={sheetTitleTextVariants()}>
-              {title}
-            </Text>
-            <View className="flex-1 flex-row justify-end">
-              {action && (
-                <Button
-                  variant="link"
-                  size="sm"
-                  label={action.label}
-                  disabled={action.disabled}
-                  onPress={action.onPress}
-                />
-              )}
-            </View>
-          </View>
+      {scrollable ? (
+        <BottomSheetScrollView
+          stickyHeaderIndices={[0]}
+          keyboardShouldPersistTaps="handled"
+          contentContainerStyle={{
+            paddingBottom: hasFooter ? footerHeight + 16 : Math.max(insets.bottom, 16) + 8,
+          }}
+        >
+          {header}
+          <View className={cn('px-screen pt-2', contentClassName)}>{children}</View>
+        </BottomSheetScrollView>
+      ) : (
+        <View className="flex-1">
+          {header}
+          <View className={cn('flex-1', contentClassName)}>{children}</View>
         </View>
-        <View className={cn('px-screen pt-2', contentClassName)}>{children}</View>
-      </BottomSheetScrollView>
+      )}
     </BottomSheetModal>
   );
 }
+
+// Lists inside a sheet must be the bottom-sheet versions so scrolling and drag-to-close cooperate.
+const SheetFlatList = BottomSheetFlatList;
+const SheetSectionList = BottomSheetSectionList;
 
 export {
   sheetBackgroundVariants,
@@ -169,5 +203,8 @@ export {
   sheetFooterVariants,
   type SheetAction,
   type SheetProps,
+  type SheetSize,
   Sheet,
+  SheetFlatList,
+  SheetSectionList,
 };

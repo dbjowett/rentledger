@@ -10,6 +10,7 @@ import {
 import type { Session } from '@supabase/supabase-js';
 import { useQueryClient } from '@tanstack/react-query';
 
+import { applyDeviceTimeZone } from '@/features/profile/applyDeviceTimeZone';
 import { supabase } from '@/lib/supabase';
 
 import { signInWithGoogle, signOutOfGoogle, type SignInResult } from './signInWithGoogle';
@@ -48,6 +49,12 @@ function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
+  const signIn = useCallback(async () => {
+    const result = await signInWithGoogle();
+    if (result.status === 'signed_in') void applyDeviceTimeZone(queryClient);
+    return result;
+  }, [queryClient]);
+
   const signOut = useCallback(async () => {
     await supabase.auth.signOut();
     await signOutOfGoogle();
@@ -55,8 +62,8 @@ function AuthProvider({ children }: { children: ReactNode }) {
   }, [queryClient]);
 
   const value = useMemo(
-    () => ({ session, loading, signIn: signInWithGoogle, signOut }),
-    [session, loading, signOut],
+    () => ({ session, loading, signIn, signOut }),
+    [session, loading, signIn, signOut],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

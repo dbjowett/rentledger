@@ -10,6 +10,19 @@ type Me = {
   settings: UserSettings;
 };
 
+type UpdateSettingsResult = {
+  settings: UserSettings;
+  /** False when `onlyIfUnset` was set and a time zone already existed. */
+  updated: boolean;
+};
+
+type TimeZoneOption = {
+  id: string;
+  city: string;
+  region: string;
+  offset: string;
+};
+
 type ApiErrorCode = 'unauthorized' | 'invalid_body' | 'not_found' | 'internal';
 
 type ApiError = {
@@ -20,4 +33,4 @@ type ApiError = {
   };
 };
 
-export type { ApiError, ApiErrorCode, Me, UserSettings };
+export type { ApiError, ApiErrorCode, Me, TimeZoneOption, UpdateSettingsResult, UserSettings };
