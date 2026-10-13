@@ -4,12 +4,12 @@ import { isValidTimeZone } from './timeZones';
 
 const timeZone = z.string().trim().refine(isValidTimeZone, 'Unknown time zone');
 
-const updateSettingsInput = z.object({
-  timeZone,
+const updateSettingsBody = z.object({
+  time_zone: timeZone,
   /** Only write when no time zone is stored yet (used for the device value at sign-in). */
-  onlyIfUnset: z.boolean().default(false),
+  only_if_unset: z.boolean().default(false),
 });
 
-type UpdateSettingsInput = z.input<typeof updateSettingsInput>;
+type UpdateSettingsBody = z.input<typeof updateSettingsBody>;
 
-export { type UpdateSettingsInput, updateSettingsInput };
+export { type UpdateSettingsBody, updateSettingsBody };

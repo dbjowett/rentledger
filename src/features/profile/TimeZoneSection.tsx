@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { View } from 'react-native';
+import { isNil } from 'es-toolkit';
 
 import { Button, Card, ListRow, SectionHeader, Text, toast } from '@/components/ui';
 import { deviceTimeZone, timeZoneCity, timeZoneOffset } from '@/shared/timeZones';
@@ -8,7 +9,7 @@ import { useMe, useUpdateSettings } from './queries';
 import { TimeZoneSheet } from './TimeZoneSheet';
 
 function blankToNull(value: string | null | undefined): string | null {
-  return value === undefined || value === null || value.trim() === '' ? null : value;
+  return isNil(value) || value.trim() === '' ? null : value;
 }
 
 function zoneMeta(zone: string | null, loading: boolean): string {
@@ -23,7 +24,7 @@ function TimeZoneSection() {
   const [pickerOpen, setPickerOpen] = useState<boolean>(false);
   console.log(me);
 
-  const savedZone = blankToNull(me.data?.settings?.time_zone);
+  const savedZone = blankToNull(me.data?.settings?.timeZone);
   const phoneZone = deviceTimeZone();
   const showPhoneHint = me.isSuccess && phoneZone !== null && phoneZone !== savedZone;
 
@@ -31,10 +32,7 @@ function TimeZoneSection() {
     setPickerOpen(false);
     updateSettings.mutate(
       { timeZone },
-      {
-        onSuccess: () => toast.show({ message: `Time zone set to ${timeZoneCity(timeZone)}` }),
-        onError: () => toast.show({ variant: 'neutral', message: "Couldn't save the time zone" }),
-      },
+      { onSuccess: () => toast.show({ message: `Time zone set to ${timeZoneCity(timeZone)}` }) },
     );
   };
 

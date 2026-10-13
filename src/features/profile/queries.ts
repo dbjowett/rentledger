@@ -1,43 +1,35 @@
-import { useMutation, useQuery, useQueryClient, type QueryClient } from '@tanstack/react-query';
+import { useQuery, type QueryClient } from '@tanstack/react-query';
 
-import { api } from '@/lib/api';
-import type { UpdateSettingsInput } from '@/shared/schemas';
-import type { Me, TimeZoneOption, UpdateSettingsResult } from '@/shared/types';
+import { useOptimisticMutation } from '@/lib/hooks/useOptimisticMutation';
+import type { Me, UpdateSettingsResult } from '@/shared/types';
 
-const meKey = ['me'] as const;
-const timeZonesKey = ['time-zones'] as const;
-
-async function updateSettings(input: UpdateSettingsInput) {
-  return api<UpdateSettingsResult>('/api/me/settings', {
-    method: 'PATCH',
-    body: JSON.stringify(input),
-  });
-}
+import { profileApi, profileKeys } from './api';
 
 function storeSettings(queryClient: QueryClient, result: UpdateSettingsResult) {
-  queryClient.setQueryData<Me>(meKey, (me) =>
+  queryClient.setQueryData<Me>(profileKeys.me, (me) =>
     me === undefined ? me : { ...me, settings: result.settings },
   );
 }
 
 function useMe() {
-  return useQuery({ queryKey: meKey, queryFn: async () => api<Me>('/api/me') });
+  return useQuery({ queryKey: profileKeys.me, queryFn: profileApi.me });
 }
 
 function useTimeZones() {
   return useQuery({
-    queryKey: timeZonesKey,
-    queryFn: async () => api<TimeZoneOption[]>('/api/time-zones'),
+    queryKey: profileKeys.timeZones,
+    queryFn: profileApi.timeZones,
     staleTime: Number.POSITIVE_INFINITY,
   });
 }
 
 function useUpdateSettings() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: updateSettings,
-    onSuccess: (result) => storeSettings(queryClient, result),
+  return useOptimisticMutation({
+    queryKey: profileKeys.me,
+    mutationFn: profileApi.updateSettings,
+    apply: (me: Me, input) => ({ ...me, settings: { ...me.settings, timeZone: input.timeZone } }),
+    errorMessage: "Couldn't save the time zone",
   });
 }
 
-export { storeSettings, updateSettings, useMe, useTimeZones, useUpdateSettings };
+export { storeSettings, useMe, useTimeZones, useUpdateSettings };

@@ -1,7 +1,7 @@
 import { requireUser } from '@/server/auth';
 import { apiError, json } from '@/server/http';
 import { getProfile } from '@/shared/profile';
-import type { Me } from '@/shared/types';
+import type { MeResponse } from '@/shared/types';
 
 export async function GET(request: Request): Promise<Response> {
   const auth = await requireUser(request);
@@ -16,6 +16,13 @@ export async function GET(request: Request): Promise<Response> {
   if (error !== null) return apiError(500, 'internal', error.message);
   if (settings === null) return apiError(404, 'not_found', 'Settings not found');
 
-  const me: Me = { id: auth.user.id, ...getProfile(auth.user), settings };
+  const profile = getProfile(auth.user);
+  const me: MeResponse = {
+    id: auth.user.id,
+    email: profile.email,
+    name: profile.name,
+    avatar_url: profile.avatarUrl,
+    settings,
+  };
   return json(me);
 }

@@ -1,5 +1,6 @@
 import { View, type ViewProps } from 'react-native';
 import { cva, type VariantProps } from 'class-variance-authority';
+import { sumBy } from 'es-toolkit';
 
 import { cn } from '@/lib/cn';
 
@@ -49,7 +50,7 @@ const percentOf = (value: number, total: number) => Math.round((value / total) *
 
 function SplitBar({ segments, size = 'md', legend = false, className, ...rest }: SplitBarProps) {
   const visible = segments.filter((segment) => segment.value > 0);
-  const total = visible.reduce((sum, segment) => sum + segment.value, 0);
+  const total = sumBy(visible, (segment) => segment.value);
   const summary = visible
     .map((segment) => `${segment.label ?? segment.key} ${percentOf(segment.value, total)}%`)
     .join(', ');

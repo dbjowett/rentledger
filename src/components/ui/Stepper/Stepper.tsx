@@ -1,5 +1,6 @@
 import { View, type AccessibilityActionEvent, type ViewProps } from 'react-native';
 import { cva } from 'class-variance-authority';
+import { clamp } from 'es-toolkit';
 import { Minus, Plus } from 'lucide-react-native';
 
 import { cn } from '@/lib/cn';
@@ -34,8 +35,8 @@ function Stepper({
 }: StepperProps) {
   const canDecrement = value - step >= min;
   const canIncrement = value + step <= max;
-  const decrement = () => onChange(Math.max(min, value - step));
-  const increment = () => onChange(Math.min(max, value + step));
+  const decrement = () => onChange(clamp(value - step, min, max));
+  const increment = () => onChange(clamp(value + step, min, max));
   const label = formatValue(value);
 
   const onAccessibilityAction = (event: AccessibilityActionEvent) => {
