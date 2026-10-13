@@ -4,7 +4,8 @@
     "slug": "rentledger",
     "version": "1.0.0",
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "output": "server"
     },
     "experiments": {
       "tsconfigPaths": true
@@ -18,7 +19,13 @@
         }
       ],
       "expo-font",
-      "expo-router"
+      [
+        "expo-router",
+        {
+          "origin": "https://rentledger.expo.app"
+        }
+      ],
+      "@react-native-google-signin/google-signin"
     ],
     "orientation": "portrait",
     "icon": "./assets/icon.png",

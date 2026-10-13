@@ -7,10 +7,10 @@ import { cn } from '@/lib/cn';
 import { IconButton } from '../IconButton/IconButton';
 import { Text } from '../Text/Text';
 
-export const stepperVariants = cva('flex-row items-center gap-3 self-start');
-export const stepperTextVariants = cva('min-w-10 text-center font-mono text-lg text-ink');
+const stepperVariants = cva('flex-row items-center gap-3 self-start');
+const stepperTextVariants = cva('min-w-10 text-center font-mono text-lg text-ink');
 
-export type StepperProps = ViewProps & {
+type StepperProps = ViewProps & {
   value: number;
   onChange: (value: number) => void;
   min?: number;
@@ -21,7 +21,7 @@ export type StepperProps = ViewProps & {
   formatValue?: (value: number) => string;
 };
 
-export function Stepper({
+function Stepper({
   value,
   onChange,
   min = 0,
@@ -74,3 +74,5 @@ export function Stepper({
     </View>
   );
 }
+
+export { stepperVariants, stepperTextVariants, type StepperProps, Stepper };

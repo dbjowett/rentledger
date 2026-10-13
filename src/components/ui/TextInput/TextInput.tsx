@@ -14,7 +14,7 @@ import { toneColor } from '@/theme/tokens';
 import { useField } from '../Field/Field';
 
 // Border grows to 2px when focused or invalid; padding shrinks by 1px so text doesn't shift.
-export const inputContainerVariants = cva('flex-row items-center rounded-tile bg-card', {
+const inputContainerVariants = cva('flex-row items-center rounded-tile bg-card', {
   variants: {
     state: {
       default: 'border border-outline px-4',
@@ -30,16 +30,16 @@ export const inputContainerVariants = cva('flex-row items-center rounded-tile bg
   defaultVariants: { state: 'default', multiline: false },
 });
 
-export const inputTextVariants = cva('flex-1 p-0 font-sans text-md', {
+const inputTextVariants = cva('flex-1 p-0 font-sans text-md', {
   variants: {
     disabled: { true: 'text-grey', false: 'text-ink' },
   },
   defaultVariants: { disabled: false },
 });
 
-export type InputState = 'default' | 'focused' | 'error' | 'disabled';
+type InputState = 'default' | 'focused' | 'error' | 'disabled';
 
-export const resolveInputState = (opts: {
+const resolveInputState = (opts: {
   focused: boolean;
   invalid: boolean;
   disabled: boolean;
@@ -51,7 +51,7 @@ export const resolveInputState = (opts: {
 };
 
 /** Tracks focus while still calling the caller's own onFocus/onBlur. */
-export function useFocusState(
+function useFocusState(
   onFocus?: (event: NativeSyntheticEvent<TargetedEvent>) => void,
   onBlur?: (event: NativeSyntheticEvent<TargetedEvent>) => void,
 ) {
@@ -71,13 +71,13 @@ export function useFocusState(
   };
 }
 
-export type TextInputProps = RNTextInputProps & {
+type TextInputProps = RNTextInputProps & {
   /** Error styling without a Field; inside a Field the error comes from it. */
   invalid?: boolean;
   containerClassName?: string;
 };
 
-export function TextInput({
+function TextInput({
   invalid,
   editable = true,
   multiline = false,
@@ -112,3 +112,13 @@ export function TextInput({
     </View>
   );
 }
+
+export {
+  inputContainerVariants,
+  inputTextVariants,
+  type InputState,
+  resolveInputState,
+  useFocusState,
+  type TextInputProps,
+  TextInput,
+};

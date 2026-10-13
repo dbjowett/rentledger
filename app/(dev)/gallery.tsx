@@ -35,7 +35,6 @@ export default function Gallery() {
   const active = tabs.find((t) => t.key === params.tab) ?? tabs[0];
   const select = (key: TabKey) => router.setParams({ tab: key });
 
-  // Keep the active tab visible when it's off-screen (e.g. after a deep link).
   const barRef = useRef<ScrollView>(null);
   const tabX = useRef<Partial<Record<TabKey, number>>>({});
   const scrollToActive = () => {

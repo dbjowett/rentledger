@@ -20,24 +20,24 @@ import { Text } from '../Text/Text';
 
 const DEFAULT_DURATION = 4000;
 
-export const toastVariants = cva(
+const toastVariants = cva(
   'min-h-12 flex-row items-center gap-3 rounded-full bg-ink py-2.5 pl-3 pr-5 shadow-lg',
 );
-export const toastTextVariants = cva('flex-1 font-medium text-base text-white');
-export const toastActionTextVariants = cva('font-semibold text-base text-accent-tint');
-export const toastIconVariants = cva('h-6 w-6 items-center justify-center rounded-full', {
+const toastTextVariants = cva('flex-1 font-medium text-base text-white');
+const toastActionTextVariants = cva('font-semibold text-base text-accent-tint');
+const toastIconVariants = cva('h-6 w-6 items-center justify-center rounded-full', {
   variants: {
     variant: { success: 'bg-success', neutral: 'bg-grey' },
   },
   defaultVariants: { variant: 'success' },
 });
 
-export type ToastAction = {
+type ToastAction = {
   label: string;
   onPress: () => void;
 };
 
-export type ToastOptions = {
+type ToastOptions = {
   message: string;
   action?: ToastAction;
   variant?: 'success' | 'neutral';
@@ -56,7 +56,7 @@ const ToastContext = createContext<ToastApi | null>(null);
 let mountedApi: ToastApi | null = null;
 
 /** Imperative API for use outside components; needs a mounted ToastProvider. */
-export const toast: ToastApi = {
+const toast: ToastApi = {
   show: (options) => {
     if (mountedApi === null) {
       if (__DEV__) console.warn('toast.show() called without a mounted ToastProvider');
@@ -67,13 +67,13 @@ export const toast: ToastApi = {
   hide: () => mountedApi?.hide(),
 };
 
-export function useToast(): ToastApi {
+function useToast(): ToastApi {
   const api = useContext(ToastContext);
   if (api === null) throw new Error('useToast must be used inside a ToastProvider');
   return api;
 }
 
-export function ToastProvider({ children }: { children: ReactNode }) {
+function ToastProvider({ children }: { children: ReactNode }) {
   const [active, setActive] = useState<ActiveToast | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const nextId = useRef(0);
@@ -157,3 +157,15 @@ export function ToastProvider({ children }: { children: ReactNode }) {
     </ToastContext.Provider>
   );
 }
+
+export {
+  toastVariants,
+  toastTextVariants,
+  toastActionTextVariants,
+  toastIconVariants,
+  type ToastAction,
+  type ToastOptions,
+  toast,
+  useToast,
+  ToastProvider,
+};

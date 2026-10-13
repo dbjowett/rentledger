@@ -5,7 +5,7 @@ import { cn } from '@/lib/cn';
 
 import { Text } from '../Text/Text';
 
-export const chipVariants = cva('items-center justify-center border px-4 active:opacity-80', {
+const chipVariants = cva('items-center justify-center border px-4 active:opacity-80', {
   variants: {
     selected: {
       true: 'border-accent bg-accent-tint',
@@ -20,28 +20,28 @@ export const chipVariants = cva('items-center justify-center border px-4 active:
   defaultVariants: { selected: false, stacked: false, disabled: false },
 });
 
-export const chipTextVariants = cva('font-semibold text-base', {
+const chipTextVariants = cva('font-semibold text-base', {
   variants: {
     selected: { true: 'text-accent', false: 'text-ink' },
   },
   defaultVariants: { selected: false },
 });
 
-export const chipSublabelTextVariants = cva('mt-0.5 font-sans text-sm', {
+const chipSublabelTextVariants = cva('mt-0.5 font-sans text-sm', {
   variants: {
     selected: { true: 'text-accent', false: 'text-grey' },
   },
   defaultVariants: { selected: false },
 });
 
-export type ChipProps = Omit<PressableProps, 'children' | 'disabled'> & {
+type ChipProps = Omit<PressableProps, 'children' | 'disabled'> & {
   label: string;
   sublabel?: string;
   selected?: boolean;
   disabled?: boolean;
 };
 
-export function Chip({
+function Chip({
   label,
   sublabel,
   selected = false,
@@ -74,3 +74,5 @@ export function Chip({
     </Pressable>
   );
 }
+
+export { chipVariants, chipTextVariants, chipSublabelTextVariants, type ChipProps, Chip };

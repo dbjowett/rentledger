@@ -1,4 +1,4 @@
-export const colors = {
+const colors = {
   ink: '#0F0F12',
   grey: '#6B6B73',
   muted: '#A0A0A8',
@@ -14,18 +14,18 @@ export const colors = {
   violet: { DEFAULT: '#5B3FD0', tint: '#EFEBFD' },
 } as const;
 
-export type Tone = 'accent' | 'success' | 'warning' | 'danger' | 'slate' | 'violet';
-export type Neutral = 'ink' | 'grey' | 'muted' | 'white';
+type Tone = 'accent' | 'success' | 'warning' | 'danger' | 'slate' | 'violet';
+type Neutral = 'ink' | 'grey' | 'muted' | 'white';
 
 /** Raw colour for props that can't take a class (icon `color`, spinners). */
-export const toneColor = (t: Tone | Neutral): string => {
+const toneColor = (t: Tone | Neutral): string => {
   if (t === 'white') return colors.card;
   if (t === 'ink' || t === 'grey' || t === 'muted') return colors[t];
   return colors[t].DEFAULT;
 };
 
 // Type scale: [fontSize, lineHeight] in px. Used as Tailwind `text-*` classes.
-export const fontSize = {
+const fontSize = {
   xs: ['12px', '16px'],
   sm: ['13px', '18px'],
   base: ['14px', '20px'],
@@ -37,8 +37,10 @@ export const fontSize = {
   '4xl': ['34px', '40px'],
 } as const;
 
-export type FontSize = keyof typeof fontSize;
+type FontSize = keyof typeof fontSize;
 
-export const spacing = {
+const spacing = {
   screen: '20px', // screen side padding
 } as const;
+
+export { colors, type Tone, type Neutral, toneColor, fontSize, type FontSize, spacing };

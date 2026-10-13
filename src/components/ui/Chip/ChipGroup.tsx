@@ -4,7 +4,7 @@ import { cn } from '@/lib/cn';
 
 import { Chip } from './Chip';
 
-export type ChipOption<T extends string> = {
+type ChipOption<T extends string> = {
   value: T;
   label: string;
   sublabel?: string;
@@ -30,10 +30,10 @@ type MultiSelectProps<T extends string> = {
   onChange: (value: T[]) => void;
 };
 
-export type ChipGroupProps<T extends string> = ChipGroupBaseProps<T> &
+type ChipGroupProps<T extends string> = ChipGroupBaseProps<T> &
   (SingleSelectProps<T> | MultiSelectProps<T>);
 
-export function ChipGroup<T extends string>(props: ChipGroupProps<T>) {
+function ChipGroup<T extends string>(props: ChipGroupProps<T>) {
   const { options, scrollable = false, className, contentContainerClassName, ...rest } = props;
 
   const isSelected = (value: T) =>
@@ -94,3 +94,5 @@ export function ChipGroup<T extends string>(props: ChipGroupProps<T>) {
     </View>
   );
 }
+
+export { type ChipOption, type ChipGroupProps, ChipGroup };

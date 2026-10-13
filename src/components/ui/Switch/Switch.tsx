@@ -12,7 +12,7 @@ import { cn } from '@/lib/cn';
 
 const THUMB_TRAVEL = 20;
 
-export const switchTrackVariants = cva('h-7 w-12 justify-center rounded-full p-0.5', {
+const switchTrackVariants = cva('h-7 w-12 justify-center rounded-full p-0.5', {
   variants: {
     value: { true: 'bg-accent', false: 'bg-outline' },
     disabled: { true: 'opacity-50', false: '' },
@@ -20,22 +20,16 @@ export const switchTrackVariants = cva('h-7 w-12 justify-center rounded-full p-0
   defaultVariants: { value: false, disabled: false },
 });
 
-export const switchThumbVariants = cva('h-6 w-6 rounded-full bg-card shadow-sm');
+const switchThumbVariants = cva('h-6 w-6 rounded-full bg-card shadow-sm');
 
-export type SwitchProps = Omit<PressableProps, 'children' | 'disabled' | 'onPress'> & {
+type SwitchProps = Omit<PressableProps, 'children' | 'disabled' | 'onPress'> & {
   value: boolean;
   onValueChange: (value: boolean) => void;
   accessibilityLabel: string;
   disabled?: boolean;
 };
 
-export function Switch({
-  value,
-  onValueChange,
-  disabled = false,
-  className,
-  ...rest
-}: SwitchProps) {
+function Switch({ value, onValueChange, disabled = false, className, ...rest }: SwitchProps) {
   const offset = useSharedValue(value ? THUMB_TRAVEL : 0);
 
   useEffect(() => {
@@ -65,3 +59,5 @@ export function Switch({
     </Pressable>
   );
 }
+
+export { switchTrackVariants, switchThumbVariants, type SwitchProps, Switch };

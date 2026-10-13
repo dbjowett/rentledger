@@ -5,7 +5,7 @@ import { Pressable, type PressableProps } from 'react-native';
 import { cn } from '@/lib/cn';
 import { toneColor } from '@/theme/tokens';
 
-export const iconButtonVariants = cva('items-center justify-center active:opacity-80', {
+const iconButtonVariants = cva('items-center justify-center active:opacity-80', {
   variants: {
     variant: {
       plain: 'bg-transparent active:bg-surface',
@@ -27,7 +27,7 @@ export const iconButtonVariants = cva('items-center justify-center active:opacit
 
 const iconSize = { sm: 18, md: 20 } as const;
 
-export type IconButtonProps = Omit<PressableProps, 'children' | 'disabled'> &
+type IconButtonProps = Omit<PressableProps, 'children' | 'disabled'> &
   Omit<VariantProps<typeof iconButtonVariants>, 'size' | 'disabled'> & {
     size?: keyof typeof iconSize;
     icon: LucideIcon;
@@ -36,7 +36,7 @@ export type IconButtonProps = Omit<PressableProps, 'children' | 'disabled'> &
     disabled?: boolean;
   };
 
-export function IconButton({
+function IconButton({
   icon: Icon,
   variant = 'plain',
   size = 'md',
@@ -62,3 +62,5 @@ export function IconButton({
     </Pressable>
   );
 }
+
+export { iconButtonVariants, type IconButtonProps, IconButton };

@@ -3,7 +3,7 @@ import { Text as RNText, type TextProps as RNTextProps } from 'react-native';
 
 import { cn } from '@/lib/cn';
 
-export const textVariants = cva('', {
+const textVariants = cva('', {
   variants: {
     size: {
       xs: 'text-xs',
@@ -37,12 +37,14 @@ export const textVariants = cva('', {
   defaultVariants: { size: 'md', weight: 'regular', tone: 'ink' },
 });
 
-export type TextSize = NonNullable<VariantProps<typeof textVariants>['size']>;
-export type TextWeight = NonNullable<VariantProps<typeof textVariants>['weight']>;
-export type TextTone = NonNullable<VariantProps<typeof textVariants>['tone']>;
+type TextSize = NonNullable<VariantProps<typeof textVariants>['size']>;
+type TextWeight = NonNullable<VariantProps<typeof textVariants>['weight']>;
+type TextTone = NonNullable<VariantProps<typeof textVariants>['tone']>;
 
-export type TextProps = RNTextProps & VariantProps<typeof textVariants>;
+type TextProps = RNTextProps & VariantProps<typeof textVariants>;
 
-export function Text({ size, weight, tone, className, ...rest }: TextProps) {
+function Text({ size, weight, tone, className, ...rest }: TextProps) {
   return <RNText className={cn(textVariants({ size, weight, tone }), className)} {...rest} />;
 }
+
+export { textVariants, type TextSize, type TextWeight, type TextTone, type TextProps, Text };

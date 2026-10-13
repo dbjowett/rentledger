@@ -5,14 +5,14 @@ import { cn } from '@/lib/cn';
 
 import { Text } from '../Text/Text';
 
-export const splitBarVariants = cva('w-full flex-row gap-0.5', {
+const splitBarVariants = cva('w-full flex-row gap-0.5', {
   variants: {
     size: { sm: 'h-2', md: 'h-3' },
   },
   defaultVariants: { size: 'md' },
 });
 
-export const splitBarSegmentVariants = cva('h-full rounded-full', {
+const splitBarSegmentVariants = cva('h-full rounded-full', {
   variants: {
     tone: {
       accent: 'bg-accent',
@@ -27,19 +27,19 @@ export const splitBarSegmentVariants = cva('h-full rounded-full', {
   defaultVariants: { tone: 'accent' },
 });
 
-export const splitBarLegendTextVariants = cva('font-sans text-sm text-grey');
+const splitBarLegendTextVariants = cva('font-sans text-sm text-grey');
 
-export type SplitBarTone = NonNullable<VariantProps<typeof splitBarSegmentVariants>['tone']>;
-export type SplitBarSize = NonNullable<VariantProps<typeof splitBarVariants>['size']>;
+type SplitBarTone = NonNullable<VariantProps<typeof splitBarSegmentVariants>['tone']>;
+type SplitBarSize = NonNullable<VariantProps<typeof splitBarVariants>['size']>;
 
-export type SplitBarSegment = {
+type SplitBarSegment = {
   key: string;
   value: number;
   tone: SplitBarTone;
   label?: string;
 };
 
-export type SplitBarProps = ViewProps & {
+type SplitBarProps = ViewProps & {
   segments: SplitBarSegment[];
   size?: SplitBarSize;
   legend?: boolean;
@@ -47,13 +47,7 @@ export type SplitBarProps = ViewProps & {
 
 const percentOf = (value: number, total: number) => Math.round((value / total) * 100);
 
-export function SplitBar({
-  segments,
-  size = 'md',
-  legend = false,
-  className,
-  ...rest
-}: SplitBarProps) {
+function SplitBar({ segments, size = 'md', legend = false, className, ...rest }: SplitBarProps) {
   const visible = segments.filter((segment) => segment.value > 0);
   const total = visible.reduce((sum, segment) => sum + segment.value, 0);
   const summary = visible
@@ -96,3 +90,14 @@ export function SplitBar({
     </View>
   );
 }
+
+export {
+  splitBarVariants,
+  splitBarSegmentVariants,
+  splitBarLegendTextVariants,
+  type SplitBarTone,
+  type SplitBarSize,
+  type SplitBarSegment,
+  type SplitBarProps,
+  SplitBar,
+};

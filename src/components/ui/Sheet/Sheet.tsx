@@ -17,19 +17,19 @@ import { cn } from '@/lib/cn';
 import { Button } from '../Button/Button';
 import { Text } from '../Text/Text';
 
-export const sheetBackgroundVariants = cva('rounded-t-sheet bg-card');
-export const sheetHandleVariants = cva('h-1 w-10 rounded-full bg-outline');
-export const sheetHeaderVariants = cva('min-h-12 flex-row items-center px-4');
-export const sheetTitleTextVariants = cva('text-center font-semibold text-lg text-ink');
-export const sheetFooterVariants = cva('border-t border-line bg-card px-screen pt-3');
+const sheetBackgroundVariants = cva('rounded-t-sheet bg-card');
+const sheetHandleVariants = cva('h-1 w-10 rounded-full bg-outline');
+const sheetHeaderVariants = cva('min-h-12 flex-row items-center px-4');
+const sheetTitleTextVariants = cva('text-center font-semibold text-lg text-ink');
+const sheetFooterVariants = cva('border-t border-line bg-card px-screen pt-3');
 
-export type SheetAction = {
+type SheetAction = {
   label: string;
   onPress: () => void;
   disabled?: boolean;
 };
 
-export type SheetProps = {
+type SheetProps = {
   open: boolean;
   onClose: () => void;
   title: string;
@@ -65,7 +65,7 @@ function SheetBackdrop(props: BottomSheetBackdropProps) {
   );
 }
 
-export function Sheet({
+function Sheet({
   open,
   onClose,
   title,
@@ -160,3 +160,14 @@ export function Sheet({
     </BottomSheetModal>
   );
 }
+
+export {
+  sheetBackgroundVariants,
+  sheetHandleVariants,
+  sheetHeaderVariants,
+  sheetTitleTextVariants,
+  sheetFooterVariants,
+  type SheetAction,
+  type SheetProps,
+  Sheet,
+};

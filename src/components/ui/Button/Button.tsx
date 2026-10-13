@@ -7,7 +7,7 @@ import { toneColor, type Neutral, type Tone } from '@/theme/tokens';
 
 import { Text } from '../Text/Text';
 
-export const buttonVariants = cva('flex-row items-center justify-center active:opacity-80', {
+const buttonVariants = cva('flex-row items-center justify-center active:opacity-80', {
   variants: {
     variant: {
       primary: 'bg-accent',
@@ -44,7 +44,7 @@ export const buttonVariants = cva('flex-row items-center justify-center active:o
   },
 });
 
-export const buttonTextVariants = cva('font-semibold', {
+const buttonTextVariants = cva('font-semibold', {
   variants: {
     variant: {
       primary: 'text-white',
@@ -78,7 +78,7 @@ const iconSize: Record<ButtonSize, number> = { sm: 16, md: 18, lg: 20 };
 // Pads small visuals out to a 44×44 touch target.
 const hitSlop: Record<ButtonSize, number> = { sm: 4, md: 0, lg: 0 };
 
-export type ButtonProps = Omit<PressableProps, 'children' | 'disabled'> &
+type ButtonProps = Omit<PressableProps, 'children' | 'disabled'> &
   Omit<VariantProps<typeof buttonVariants>, 'variant' | 'size' | 'disabled'> & {
     variant?: ButtonVariant;
     size?: ButtonSize;
@@ -88,7 +88,7 @@ export type ButtonProps = Omit<PressableProps, 'children' | 'disabled'> &
     disabled?: boolean;
   };
 
-export function Button({
+function Button({
   label,
   variant = 'primary',
   size = 'md',
@@ -132,3 +132,5 @@ export function Button({
     </Pressable>
   );
 }
+
+export { buttonVariants, buttonTextVariants, type ButtonProps, Button };

@@ -16,18 +16,18 @@ type FieldContextValue = {
 const FieldContext = createContext<FieldContextValue>({ required: false, invalid: false });
 
 /** Lets inputs pick up their Field's label, required flag and error state. */
-export const useField = () => useContext(FieldContext);
+const useField = () => useContext(FieldContext);
 
-export const fieldVariants = cva('gap-1.5');
-export const fieldLabelTextVariants = cva('font-semibold text-base text-ink');
-export const fieldMessageTextVariants = cva('font-sans text-sm', {
+const fieldVariants = cva('gap-1.5');
+const fieldLabelTextVariants = cva('font-semibold text-base text-ink');
+const fieldMessageTextVariants = cva('font-sans text-sm', {
   variants: {
     tone: { hint: 'text-grey', error: 'text-danger' },
   },
   defaultVariants: { tone: 'hint' },
 });
 
-export type FieldProps = ViewProps & {
+type FieldProps = ViewProps & {
   label: string;
   hint?: string;
   error?: string;
@@ -35,15 +35,7 @@ export type FieldProps = ViewProps & {
   children: ReactNode;
 };
 
-export function Field({
-  label,
-  hint,
-  error,
-  required = false,
-  className,
-  children,
-  ...rest
-}: FieldProps) {
+function Field({ label, hint, error, required = false, className, children, ...rest }: FieldProps) {
   const invalid = error !== undefined && error !== '';
   const message = invalid ? error : hint;
 
@@ -72,3 +64,12 @@ export function Field({
     </FieldContext.Provider>
   );
 }
+
+export {
+  useField,
+  fieldVariants,
+  fieldLabelTextVariants,
+  fieldMessageTextVariants,
+  type FieldProps,
+  Field,
+};

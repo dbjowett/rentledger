@@ -9,7 +9,7 @@ import { toneColor } from '@/theme/tokens';
 import { Amount, type AmountProps } from '../Amount/Amount';
 import { Text } from '../Text/Text';
 
-export const listRowVariants = cva('flex-row items-center gap-3 px-4', {
+const listRowVariants = cva('flex-row items-center gap-3 px-4', {
   variants: {
     pressable: { true: 'active:bg-surface', false: '' },
   },
@@ -17,17 +17,17 @@ export const listRowVariants = cva('flex-row items-center gap-3 px-4', {
 });
 
 // The right-hand part carries the divider so it starts after the leading slot.
-export const listRowContentVariants = cva('min-h-[76px] flex-1 flex-row items-center gap-3 py-4', {
+const listRowContentVariants = cva('min-h-[76px] flex-1 flex-row items-center gap-3 py-4', {
   variants: {
     divider: { true: 'border-b border-line', false: '' },
   },
   defaultVariants: { divider: false },
 });
 
-export const listRowTitleTextVariants = cva('shrink font-semibold text-md text-ink');
-export const listRowMetaTextVariants = cva('mt-0.5 font-sans text-base text-grey');
+const listRowTitleTextVariants = cva('shrink font-semibold text-md text-ink');
+const listRowMetaTextVariants = cva('mt-0.5 font-sans text-base text-grey');
 
-export type ListRowProps = Omit<PressableProps, 'children'> & {
+type ListRowProps = Omit<PressableProps, 'children'> & {
   title: string;
   /** Right after the title, e.g. <Text tone="danger">7d late</Text> or a Tag. */
   titleAccessory?: ReactNode;
@@ -45,7 +45,7 @@ export type ListRowProps = Omit<PressableProps, 'children'> & {
   divider?: boolean;
 };
 
-export function ListRow({
+function ListRow({
   title,
   titleAccessory,
   meta,
@@ -92,3 +92,12 @@ export function ListRow({
     </Pressable>
   );
 }
+
+export {
+  listRowVariants,
+  listRowContentVariants,
+  listRowTitleTextVariants,
+  listRowMetaTextVariants,
+  type ListRowProps,
+  ListRow,
+};

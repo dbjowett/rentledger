@@ -13,7 +13,7 @@ import { View, type ViewProps } from 'react-native';
 import { cn } from '@/lib/cn';
 import { toneColor, type Tone } from '@/theme/tokens';
 
-export const iconTileVariants = cva('items-center justify-center rounded-tile', {
+const iconTileVariants = cva('items-center justify-center rounded-tile', {
   variants: {
     tone: {
       accent: 'bg-accent-tint',
@@ -31,7 +31,7 @@ export const iconTileVariants = cva('items-center justify-center rounded-tile', 
   defaultVariants: { tone: 'accent', size: 44 },
 });
 
-export const iconTileKinds = {
+const iconTileKinds = {
   rent: { tone: 'success', icon: ArrowDownLeft },
   bill: { tone: 'slate', icon: FileText },
   mortgage: { tone: 'accent', icon: Percent },
@@ -40,19 +40,19 @@ export const iconTileKinds = {
   done: { tone: 'success', icon: Check },
 } as const satisfies Record<string, { tone: Tone; icon: LucideIcon }>;
 
-export type IconTileKind = keyof typeof iconTileKinds;
-export type IconTileSize = 36 | 44;
+type IconTileKind = keyof typeof iconTileKinds;
+type IconTileSize = 36 | 44;
 
 const iconSize: Record<IconTileSize, number> = { 36: 18, 44: 22 };
 
-export type IconTileProps = ViewProps & {
+type IconTileProps = ViewProps & {
   size?: IconTileSize;
 } & (
     | { kind: IconTileKind; tone?: never; icon?: never }
     | { kind?: never; tone: Tone; icon: LucideIcon }
   );
 
-export function IconTile({ kind, tone, icon, size = 44, className, ...rest }: IconTileProps) {
+function IconTile({ kind, tone, icon, size = 44, className, ...rest }: IconTileProps) {
   const preset = kind ? iconTileKinds[kind] : undefined;
   const resolvedTone: Tone = preset?.tone ?? tone ?? 'accent';
   const Icon: LucideIcon = preset?.icon ?? icon ?? Check;
@@ -67,3 +67,12 @@ export function IconTile({ kind, tone, icon, size = 44, className, ...rest }: Ic
     </View>
   );
 }
+
+export {
+  iconTileVariants,
+  iconTileKinds,
+  type IconTileKind,
+  type IconTileSize,
+  type IconTileProps,
+  IconTile,
+};

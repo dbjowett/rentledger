@@ -6,7 +6,7 @@ import { cn } from '@/lib/cn';
 
 import { Text } from '../Text/Text';
 
-export const cardVariants = cva('overflow-hidden rounded-card', {
+const cardVariants = cva('overflow-hidden rounded-card', {
   variants: {
     variant: {
       elevated: 'border border-line bg-card',
@@ -31,7 +31,7 @@ export const cardVariants = cva('overflow-hidden rounded-card', {
 
 type CardVariantProps = Omit<VariantProps<typeof cardVariants>, 'pressable'>;
 
-export type CardProps = Omit<PressableProps, 'children'> &
+type CardProps = Omit<PressableProps, 'children'> &
   CardVariantProps & {
     children?: ReactNode;
   };
@@ -53,10 +53,10 @@ function CardRoot({ variant, padding, onPress, className, children, ...rest }: C
   );
 }
 
-export const cardHeaderVariants = cva('mb-3 min-h-[28px] flex-row items-center gap-2');
-export const cardHeaderTextVariants = cva('shrink font-semibold text-xl text-ink');
+const cardHeaderVariants = cva('mb-3 min-h-[28px] flex-row items-center gap-2');
+const cardHeaderTextVariants = cva('shrink font-semibold text-xl text-ink');
 
-export type CardHeaderProps = ViewProps & {
+type CardHeaderProps = ViewProps & {
   title: string;
   /** Sits right after the title, e.g. a CountBadge or Tag. */
   accessory?: ReactNode;
@@ -85,8 +85,17 @@ function CardFooter({ className, ...rest }: ViewProps) {
   return <View className={cn('mt-4 flex-row items-center gap-3', className)} {...rest} />;
 }
 
-export const Card = Object.assign(CardRoot, {
+const Card = Object.assign(CardRoot, {
   Header: CardHeader,
   Body: CardBody,
   Footer: CardFooter,
 });
+
+export {
+  cardVariants,
+  type CardProps,
+  cardHeaderVariants,
+  cardHeaderTextVariants,
+  type CardHeaderProps,
+  Card,
+};

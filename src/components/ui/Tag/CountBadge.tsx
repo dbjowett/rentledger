@@ -5,19 +5,19 @@ import { cn } from '@/lib/cn';
 
 import { Text } from '../Text/Text';
 
-export const countBadgeVariants = cva(
+const countBadgeVariants = cva(
   'h-6 min-w-6 items-center justify-center self-start rounded-full bg-ink px-1.5',
 );
 
-export const countBadgeTextVariants = cva('font-semibold text-sm text-white');
+const countBadgeTextVariants = cva('font-semibold text-sm text-white');
 
-export type CountBadgeProps = ViewProps & {
+type CountBadgeProps = ViewProps & {
   count: number;
   /** Counts above this show as "{max}+". */
   max?: number;
 };
 
-export function CountBadge({ count, max = 99, className, ...rest }: CountBadgeProps) {
+function CountBadge({ count, max = 99, className, ...rest }: CountBadgeProps) {
   const label = count > max ? `${max}+` : String(count);
 
   return (
@@ -31,3 +31,5 @@ export function CountBadge({ count, max = 99, className, ...rest }: CountBadgePr
     </View>
   );
 }
+
+export { countBadgeVariants, countBadgeTextVariants, type CountBadgeProps, CountBadge };

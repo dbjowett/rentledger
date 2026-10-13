@@ -5,6 +5,7 @@ import oxc from './lint/oxc.ts';
 import react from './lint/react.ts';
 import typescript from './lint/typescript.ts';
 import unicorn from './lint/unicorn.ts';
+import imports from './lint/imports.ts';
 
 const overrides: OxlintOverride[] = [
   {
@@ -31,7 +32,7 @@ const overrides: OxlintOverride[] = [
 ];
 
 export default defineConfig({
-  extends: [eslint, oxc, typescript, unicorn, react],
+  extends: [eslint, oxc, typescript, unicorn, react, imports],
   categories: {
     correctness: 'off',
     suspicious: 'off',

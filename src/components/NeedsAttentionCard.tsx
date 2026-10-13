@@ -12,10 +12,10 @@ import {
 } from '@/components/ui';
 import { toneColor } from '@/theme/tokens';
 
-export type NeedsAttentionType = 'rent' | 'bill' | 'mortgage' | 'receipt' | 'match';
-export type NeedsAttentionState = 'pending' | 'uploading' | 'done';
+type NeedsAttentionType = 'rent' | 'bill' | 'mortgage' | 'receipt' | 'match';
+type NeedsAttentionState = 'pending' | 'uploading' | 'done';
 
-export type NeedsAttentionItem = {
+type NeedsAttentionItem = {
   id: string;
   type: NeedsAttentionType;
   title: string;
@@ -25,7 +25,7 @@ export type NeedsAttentionItem = {
   state?: NeedsAttentionState;
 };
 
-export type NeedsAttentionCardProps = {
+type NeedsAttentionCardProps = {
   items: NeedsAttentionItem[];
   onAction: (item: NeedsAttentionItem) => void;
   onSeeAll?: () => void;
@@ -105,7 +105,7 @@ function NeedsAttentionRow({ item, divider, onAction }: RowProps) {
   );
 }
 
-export function NeedsAttentionCard({
+function NeedsAttentionCard({
   items,
   onAction,
   onSeeAll,
@@ -153,3 +153,11 @@ export function NeedsAttentionCard({
     </Card>
   );
 }
+
+export {
+  type NeedsAttentionType,
+  type NeedsAttentionState,
+  type NeedsAttentionItem,
+  type NeedsAttentionCardProps,
+  NeedsAttentionCard,
+};

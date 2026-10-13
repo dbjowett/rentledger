@@ -7,9 +7,9 @@ export default function Home() {
   return (
     <View className="flex-1 bg-surface p-5">
       <Stack.Screen options={{ title: 'Rental Tracker' }} />
-      <View className="bg-accent p-4">
-        <Text weight="semibold" tone="white">
-          Hi
+      <View className="p-4">
+        <Text weight="semibold" tone="ink">
+          Landing Page (app/index.tsx)
         </Text>
       </View>
       {__DEV__ && (

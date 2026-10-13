@@ -24,7 +24,7 @@ const formatForDisplay = (cents: number | null) =>
   cents === null ? '' : grouped.format(cents / 100);
 
 /** "1,240.5" → "1240.5": keeps digits and the first dot, at most 2 decimals. */
-export function sanitizeMoneyText(text: string): string {
+function sanitizeMoneyText(text: string): string {
   const cleaned = text.replaceAll(/[^\d.]/g, '');
   const [whole = '', ...fractionParts] = cleaned.split('.');
   const dollars = whole.replace(/^0+(?=\d)/, '').slice(0, MAX_DOLLAR_DIGITS);
@@ -33,35 +33,35 @@ export function sanitizeMoneyText(text: string): string {
 }
 
 /** "1240.5" → 124050. Empty input is null, not 0. */
-export function parseMoneyText(text: string): number | null {
+function parseMoneyText(text: string): number | null {
   if (text === '' || text === '.') return null;
   const [whole = '0', fraction = ''] = text.split('.');
   return Number(whole === '' ? '0' : whole) * 100 + Number(fraction.padEnd(2, '0'));
 }
 
 /** 124050 → "1240.50" for editing; whole dollars drop the fraction. */
-export function centsToEditText(cents: number | null): string {
+function centsToEditText(cents: number | null): string {
   if (cents === null) return '';
   const dollars = Math.trunc(cents / 100);
   const rest = cents % 100;
   return rest === 0 ? String(dollars) : `${dollars}.${String(rest).padStart(2, '0')}`;
 }
 
-export const moneyInputTextVariants = cva('flex-1 p-0 font-mono text-3xl', {
+const moneyInputTextVariants = cva('flex-1 p-0 font-mono text-3xl', {
   variants: {
     disabled: { true: 'text-grey', false: 'text-ink' },
   },
   defaultVariants: { disabled: false },
 });
 
-export const moneyInputPrefixTextVariants = cva('mr-1 font-mono text-3xl', {
+const moneyInputPrefixTextVariants = cva('mr-1 font-mono text-3xl', {
   variants: {
     empty: { true: 'text-muted', false: 'text-ink' },
   },
   defaultVariants: { empty: false },
 });
 
-export type MoneyInputProps = Omit<
+type MoneyInputProps = Omit<
   RNTextInputProps,
   'value' | 'defaultValue' | 'onChangeText' | 'keyboardType' | 'inputMode'
 > & {
@@ -72,7 +72,7 @@ export type MoneyInputProps = Omit<
   containerClassName?: string;
 };
 
-export function MoneyInput({
+function MoneyInput({
   cents,
   onChangeCents,
   invalid,
@@ -125,3 +125,13 @@ export function MoneyInput({
     </View>
   );
 }
+
+export {
+  sanitizeMoneyText,
+  parseMoneyText,
+  centsToEditText,
+  moneyInputTextVariants,
+  moneyInputPrefixTextVariants,
+  type MoneyInputProps,
+  MoneyInput,
+};

@@ -7,7 +7,7 @@ import { toneColor, type Neutral, type Tone } from '@/theme/tokens';
 
 import { Text } from '../Text/Text';
 
-export const tagVariants = cva('flex-row items-center self-start rounded-full', {
+const tagVariants = cva('flex-row items-center self-start rounded-full', {
   variants: {
     tone: { neutral: '', success: '', warning: '', danger: '', accent: '', violet: '' },
     variant: { soft: '', solid: '', outline: 'border' },
@@ -39,7 +39,7 @@ export const tagVariants = cva('flex-row items-center self-start rounded-full', 
   defaultVariants: { tone: 'neutral', variant: 'soft', size: 'sm' },
 });
 
-export const tagTextVariants = cva('font-semibold', {
+const tagTextVariants = cva('font-semibold', {
   variants: {
     tone: {
       neutral: 'text-grey',
@@ -55,9 +55,9 @@ export const tagTextVariants = cva('font-semibold', {
   defaultVariants: { tone: 'neutral', variant: 'soft', size: 'sm' },
 });
 
-export type TagTone = NonNullable<VariantProps<typeof tagVariants>['tone']>;
-export type TagVariant = NonNullable<VariantProps<typeof tagVariants>['variant']>;
-export type TagSize = NonNullable<VariantProps<typeof tagVariants>['size']>;
+type TagTone = NonNullable<VariantProps<typeof tagVariants>['tone']>;
+type TagVariant = NonNullable<VariantProps<typeof tagVariants>['variant']>;
+type TagSize = NonNullable<VariantProps<typeof tagVariants>['size']>;
 
 const iconTone: Record<TagTone, Tone | Neutral> = {
   neutral: 'grey',
@@ -70,7 +70,7 @@ const iconTone: Record<TagTone, Tone | Neutral> = {
 
 const iconSize: Record<TagSize, number> = { sm: 12, md: 14 };
 
-export type TagProps = ViewProps & {
+type TagProps = ViewProps & {
   label: string;
   tone?: TagTone;
   variant?: TagVariant;
@@ -78,7 +78,7 @@ export type TagProps = ViewProps & {
   icon?: LucideIcon;
 };
 
-export function Tag({
+function Tag({
   label,
   tone = 'neutral',
   variant = 'soft',
@@ -103,3 +103,13 @@ export function Tag({
     </View>
   );
 }
+
+export {
+  tagVariants,
+  tagTextVariants,
+  type TagTone,
+  type TagVariant,
+  type TagSize,
+  type TagProps,
+  Tag,
+};

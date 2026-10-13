@@ -1,4 +1,4 @@
-import { cva, type VariantProps } from 'class-variance-authority';
+import type { VariantProps } from 'class-variance-authority';
 import { useEffect, useState } from 'react';
 import { Pressable, View, type LayoutChangeEvent, type ViewProps } from 'react-native';
 import Animated, {
@@ -11,50 +11,34 @@ import Animated, {
 import { cn } from '@/lib/cn';
 
 import { Text } from '../Text/Text';
+import {
+  segmentedControlVariants,
+  segmentIndicatorVariants,
+  segmentVariants,
+  segmentTextVariants,
+} from './variants';
 
 const TRACK_PADDING = 2;
 
-export const segmentedControlVariants = cva('flex-row rounded-full bg-surface p-0.5', {
-  variants: {
-    size: {
-      sm: 'h-9',
-      md: 'h-11',
-    },
-  },
-  defaultVariants: { size: 'md' },
-});
-
-export const segmentIndicatorVariants = cva('flex-1 rounded-full border border-line bg-card');
-
-export const segmentVariants = cva(
-  'flex-1 items-center justify-center rounded-full px-3 active:opacity-80',
-);
-
-export const segmentTextVariants = cva('font-semibold', {
-  variants: {
-    size: { sm: 'text-base', md: 'text-md' },
-    selected: { true: 'text-ink', false: 'text-grey' },
-  },
-  defaultVariants: { size: 'md', selected: false },
-});
-
-export type SegmentedControlSize = NonNullable<
-  VariantProps<typeof segmentedControlVariants>['size']
+type SegmentedControlSize = NonNullable<VariantProps<typeof segmentedControlVariants>['size']>;
+type SegmentedControlRounded = NonNullable<
+  VariantProps<typeof segmentedControlVariants>['rounded']
 >;
 
-export type SegmentOption<T extends string> = {
+type SegmentOption<T extends string> = {
   value: T;
   label: string;
 };
 
-export type SegmentedControlProps<T extends string> = ViewProps & {
+type SegmentedControlProps<T extends string> = ViewProps & {
   options: Array<SegmentOption<T>>;
   value: T;
   onChange: (value: T) => void;
   size?: SegmentedControlSize;
+  rounded?: SegmentedControlRounded;
 };
 
-export function SegmentedControl<T extends string>({
+function SegmentedControl<T extends string>({
   options,
   value,
   onChange,
@@ -133,3 +117,11 @@ export function SegmentedControl<T extends string>({
     </View>
   );
 }
+
+export {
+  type SegmentedControlSize,
+  type SegmentedControlRounded,
+  type SegmentOption,
+  type SegmentedControlProps,
+  SegmentedControl,
+};

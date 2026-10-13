@@ -4,7 +4,7 @@ import { cn } from '@/lib/cn';
 
 import { Text, type TextProps } from '../Text/Text';
 
-export const amountTextVariants = cva('font-mono', {
+const amountTextVariants = cva('font-mono', {
   variants: {
     kind: {
       income: 'text-success',
@@ -15,7 +15,7 @@ export const amountTextVariants = cva('font-mono', {
   defaultVariants: { kind: 'neutral' },
 });
 
-export type AmountKind = NonNullable<VariantProps<typeof amountTextVariants>['kind']>;
+type AmountKind = NonNullable<VariantProps<typeof amountTextVariants>['kind']>;
 
 const MINUS = '−';
 
@@ -30,7 +30,7 @@ const formatters = {
 };
 
 /** Formats cents as CAD, e.g. 124000 → "$1,240.00". Always unsigned. */
-export function formatCents(cents: number, hideCents = false) {
+function formatCents(cents: number, hideCents = false) {
   return (hideCents ? formatters.whole : formatters.cents).format(Math.abs(cents) / 100);
 }
 
@@ -48,14 +48,14 @@ function signFor(cents: number, kind: AmountKind, showSign: boolean) {
   return showSign && cents > 0 ? '+' : '';
 }
 
-export type AmountProps = Omit<TextProps, 'children' | 'weight' | 'tone'> & {
+type AmountProps = Omit<TextProps, 'children' | 'weight' | 'tone'> & {
   cents: number;
   kind?: AmountKind;
   showSign?: boolean;
   hideCents?: boolean;
 };
 
-export function Amount({
+function Amount({
   cents,
   kind = 'neutral',
   showSign = false,
@@ -80,3 +80,5 @@ export function Amount({
     </Text>
   );
 }
+
+export { amountTextVariants, type AmountKind, formatCents, type AmountProps, Amount };

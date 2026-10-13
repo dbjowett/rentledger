@@ -9,7 +9,7 @@ import type { Tone } from '@/theme/tokens';
 import { IconTile } from '../IconTile/IconTile';
 import { Text, type TextProps } from '../Text/Text';
 
-export const emptyStateVariants = cva('w-full items-center justify-center gap-6 rounded-card p-6', {
+const emptyStateVariants = cva('w-full items-center justify-center gap-6 rounded-card p-6', {
   variants: {
     variant: {
       plain: '',
@@ -19,19 +19,19 @@ export const emptyStateVariants = cva('w-full items-center justify-center gap-6 
   defaultVariants: { variant: 'plain' },
 });
 
-export const emptyStateHeaderVariants = cva('w-full max-w-sm items-center gap-2');
+const emptyStateHeaderVariants = cva('w-full max-w-sm items-center gap-2');
 
-export const emptyStateMediaVariants = cva('mb-2 items-center justify-center');
+const emptyStateMediaVariants = cva('mb-2 items-center justify-center');
 
-export const emptyStateTitleTextVariants = cva('text-center font-semibold text-xl text-ink');
+const emptyStateTitleTextVariants = cva('text-center font-semibold text-xl text-ink');
 
-export const emptyStateDescriptionTextVariants = cva(
+const emptyStateDescriptionTextVariants = cva(
   'text-center font-sans text-base leading-[22px] text-grey',
 );
 
-export const emptyStateContentVariants = cva('w-full max-w-sm items-center gap-4');
+const emptyStateContentVariants = cva('w-full max-w-sm items-center gap-4');
 
-export type EmptyStateProps = ViewProps & VariantProps<typeof emptyStateVariants>;
+type EmptyStateProps = ViewProps & VariantProps<typeof emptyStateVariants>;
 
 function EmptyStateRoot({ variant, className, ...rest }: EmptyStateProps) {
   return <View className={cn(emptyStateVariants({ variant }), className)} {...rest} />;
@@ -41,7 +41,7 @@ function EmptyStateHeader({ className, ...rest }: ViewProps) {
   return <View className={cn(emptyStateHeaderVariants(), className)} {...rest} />;
 }
 
-export type EmptyStateMediaProps = ViewProps &
+type EmptyStateMediaProps = ViewProps &
   (
     | { variant?: 'default'; icon?: never; tone?: never }
     | { variant: 'icon'; icon: LucideIcon; tone?: Tone }
@@ -91,10 +91,22 @@ function EmptyStateContent({ className, children, ...rest }: ViewProps) {
   );
 }
 
-export const EmptyState = Object.assign(EmptyStateRoot, {
+const EmptyState = Object.assign(EmptyStateRoot, {
   Header: EmptyStateHeader,
   Media: EmptyStateMedia,
   Title: EmptyStateTitle,
   Description: EmptyStateDescription,
   Content: EmptyStateContent,
 });
+
+export {
+  emptyStateVariants,
+  emptyStateHeaderVariants,
+  emptyStateMediaVariants,
+  emptyStateTitleTextVariants,
+  emptyStateDescriptionTextVariants,
+  emptyStateContentVariants,
+  type EmptyStateProps,
+  type EmptyStateMediaProps,
+  EmptyState,
+};

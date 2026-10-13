@@ -63,13 +63,13 @@ export {
   sectionHeaderVariants,
 } from './SectionHeader/SectionHeader';
 export type { SectionHeaderAction, SectionHeaderProps } from './SectionHeader/SectionHeader';
+export { SegmentedControl } from './SegmentedControl/SegmentedControl';
 export {
-  SegmentedControl,
   segmentIndicatorVariants,
   segmentTextVariants,
   segmentVariants,
   segmentedControlVariants,
-} from './SegmentedControl/SegmentedControl';
+} from './SegmentedControl/variants';
 export type {
   SegmentOption,
   SegmentedControlProps,

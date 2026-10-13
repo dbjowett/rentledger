@@ -5,14 +5,14 @@ import { cn } from '@/lib/cn';
 
 import { Text } from '../Text/Text';
 
-export const radioVariants = cva('min-h-11 flex-row items-center gap-3 active:opacity-80', {
+const radioVariants = cva('min-h-11 flex-row items-center gap-3 active:opacity-80', {
   variants: {
     disabled: { true: 'opacity-50', false: '' },
   },
   defaultVariants: { disabled: false },
 });
 
-export const radioCircleVariants = cva(
+const radioCircleVariants = cva(
   'h-[22px] w-[22px] items-center justify-center rounded-full border-2',
   {
     variants: {
@@ -22,25 +22,18 @@ export const radioCircleVariants = cva(
   },
 );
 
-export const radioDotVariants = cva('h-2.5 w-2.5 rounded-full bg-accent');
-export const radioTextVariants = cva('font-medium text-md text-ink');
-export const radioSublabelTextVariants = cva('font-sans text-base text-grey');
+const radioDotVariants = cva('h-2.5 w-2.5 rounded-full bg-accent');
+const radioTextVariants = cva('font-medium text-md text-ink');
+const radioSublabelTextVariants = cva('font-sans text-base text-grey');
 
-export type RadioProps = Omit<PressableProps, 'children' | 'disabled'> & {
+type RadioProps = Omit<PressableProps, 'children' | 'disabled'> & {
   label: string;
   sublabel?: string;
   selected: boolean;
   disabled?: boolean;
 };
 
-export function Radio({
-  label,
-  sublabel,
-  selected,
-  disabled = false,
-  className,
-  ...rest
-}: RadioProps) {
+function Radio({ label, sublabel, selected, disabled = false, className, ...rest }: RadioProps) {
   return (
     <Pressable
       accessibilityRole="radio"
@@ -61,20 +54,20 @@ export function Radio({
   );
 }
 
-export type RadioOption<T extends string> = {
+type RadioOption<T extends string> = {
   value: T;
   label: string;
   sublabel?: string;
   disabled?: boolean;
 };
 
-export type RadioGroupProps<T extends string> = ViewProps & {
+type RadioGroupProps<T extends string> = ViewProps & {
   options: Array<RadioOption<T>>;
   value: T | null;
   onChange: (value: T) => void;
 };
 
-export function RadioGroup<T extends string>({
+function RadioGroup<T extends string>({
   options,
   value,
   onChange,
@@ -96,3 +89,16 @@ export function RadioGroup<T extends string>({
     </View>
   );
 }
+
+export {
+  radioVariants,
+  radioCircleVariants,
+  radioDotVariants,
+  radioTextVariants,
+  radioSublabelTextVariants,
+  type RadioProps,
+  Radio,
+  type RadioOption,
+  type RadioGroupProps,
+  RadioGroup,
+};

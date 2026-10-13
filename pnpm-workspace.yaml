@@ -1,3 +1,6 @@
 nodeLinker: hoisted
 allowBuilds:
   unrs-resolver: true
+supportedArchitectures:
+  os: [current, linux]
+  cpu: [current, x64]
