@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { View } from 'react-native';
 import {
   Check,
   ChevronLeft,
@@ -8,8 +10,6 @@ import {
   Trash2,
   X,
 } from 'lucide-react-native';
-import { useState } from 'react';
-import { View } from 'react-native';
 
 import { Button, IconButton, type ButtonProps, type IconButtonProps } from '@/components/ui';
 

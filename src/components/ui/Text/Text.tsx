@@ -1,5 +1,5 @@
-import { cva, type VariantProps } from 'class-variance-authority';
 import { Text as RNText, type TextProps as RNTextProps } from 'react-native';
+import { cva, type VariantProps } from 'class-variance-authority';
 
 import { cn } from '@/lib/cn';
 

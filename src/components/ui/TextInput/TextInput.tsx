@@ -1,4 +1,3 @@
-import { cva } from 'class-variance-authority';
 import { useState } from 'react';
 import {
   TextInput as RNTextInput,
@@ -7,6 +6,7 @@ import {
   type TargetedEvent,
   type TextInputProps as RNTextInputProps,
 } from 'react-native';
+import { cva } from 'class-variance-authority';
 
 import { cn } from '@/lib/cn';
 import { toneColor } from '@/theme/tokens';

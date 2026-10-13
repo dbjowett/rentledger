@@ -1,6 +1,6 @@
-import { cva } from 'class-variance-authority';
 import { useEffect } from 'react';
 import { Pressable, View, type PressableProps } from 'react-native';
+import { cva } from 'class-variance-authority';
 import Animated, {
   Easing,
   useAnimatedStyle,

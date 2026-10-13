@@ -1,5 +1,5 @@
-import { AlertTriangle, Check, Clock, Pencil, Sparkles } from 'lucide-react-native';
 import { View } from 'react-native';
+import { AlertTriangle, Check, Clock, Pencil, Sparkles } from 'lucide-react-native';
 
 import { CountBadge, Tag, type TagTone, type TagVariant } from '@/components/ui';
 

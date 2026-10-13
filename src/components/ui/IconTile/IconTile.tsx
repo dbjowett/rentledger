@@ -1,3 +1,4 @@
+import { View, type ViewProps } from 'react-native';
 import { cva } from 'class-variance-authority';
 import {
   ArrowDownLeft,
@@ -8,7 +9,6 @@ import {
   Receipt,
   type LucideIcon,
 } from 'lucide-react-native';
-import { View, type ViewProps } from 'react-native';
 
 import { cn } from '@/lib/cn';
 import { toneColor, type Tone } from '@/theme/tokens';

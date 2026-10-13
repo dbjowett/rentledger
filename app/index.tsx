@@ -1,5 +1,5 @@
-import { Link, Stack } from 'expo-router';
 import { Pressable, View } from 'react-native';
+import { Link, Stack } from 'expo-router';
 
 import { Text } from '@/components/ui';
 

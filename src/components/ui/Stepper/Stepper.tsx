@@ -1,6 +1,6 @@
+import { View, type AccessibilityActionEvent, type ViewProps } from 'react-native';
 import { cva } from 'class-variance-authority';
 import { Minus, Plus } from 'lucide-react-native';
-import { View, type AccessibilityActionEvent, type ViewProps } from 'react-native';
 
 import { cn } from '@/lib/cn';
 

@@ -1,11 +1,11 @@
 import { defineConfig, type OxlintOverride } from 'oxlint';
 
 import eslint from './lint/eslint.ts';
+import imports from './lint/imports.ts';
 import oxc from './lint/oxc.ts';
 import react from './lint/react.ts';
 import typescript from './lint/typescript.ts';
 import unicorn from './lint/unicorn.ts';
-import imports from './lint/imports.ts';
 
 const overrides: OxlintOverride[] = [
   {

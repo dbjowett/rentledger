@@ -4,7 +4,6 @@ const { colors, fontSize, spacing } = require('./src/theme/tokens');
 module.exports = {
   content: ['./app/**/*.{ts,tsx}', './src/**/*.{ts,tsx}'],
   presets: [require('nativewind/preset')],
-  // Android ignores fontWeight on custom fonts; weights are separate families (font-medium, etc.).
   corePlugins: { fontWeight: false },
   theme: {
     fontSize,

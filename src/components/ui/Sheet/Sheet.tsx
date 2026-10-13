@@ -1,3 +1,5 @@
+import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
+import { View, type LayoutChangeEvent } from 'react-native';
 import {
   BottomSheetBackdrop,
   BottomSheetFooter,
@@ -8,8 +10,6 @@ import {
   type BottomSheetFooterProps,
 } from '@gorhom/bottom-sheet';
 import { cva } from 'class-variance-authority';
-import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
-import { View, type LayoutChangeEvent } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { cn } from '@/lib/cn';

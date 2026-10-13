@@ -1,6 +1,6 @@
+import { View, type ViewProps } from 'react-native';
 import { cva, type VariantProps } from 'class-variance-authority';
 import type { LucideIcon } from 'lucide-react-native';
-import { View, type ViewProps } from 'react-native';
 
 import { cn } from '@/lib/cn';
 import { toneColor, type Neutral, type Tone } from '@/theme/tokens';

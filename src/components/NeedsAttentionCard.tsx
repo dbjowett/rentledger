@@ -1,5 +1,5 @@
-import { CheckCheck, ChevronRight } from 'lucide-react-native';
 import { View } from 'react-native';
+import { CheckCheck, ChevronRight } from 'lucide-react-native';
 
 import {
   Button,

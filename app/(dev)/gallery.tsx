@@ -1,6 +1,6 @@
-import { Stack, router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useRef } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
+import { Stack, router, useLocalSearchParams } from 'expo-router';
 
 import { Text } from '@/components/ui';
 import { ButtonsTab } from '@/dev/gallery/ButtonsTab';

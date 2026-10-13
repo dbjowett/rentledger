@@ -1,5 +1,3 @@
-import { cva } from 'class-variance-authority';
-import { Check } from 'lucide-react-native';
 import {
   createContext,
   useCallback,
@@ -11,6 +9,8 @@ import {
   type ReactNode,
 } from 'react';
 import { AccessibilityInfo, Pressable, View } from 'react-native';
+import { cva } from 'class-variance-authority';
+import { Check } from 'lucide-react-native';
 import Animated, { FadeInDown, FadeOutDown } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 

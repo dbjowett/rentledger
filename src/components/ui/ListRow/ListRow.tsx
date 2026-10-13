@@ -1,7 +1,7 @@
-import { cva } from 'class-variance-authority';
-import { ChevronRight } from 'lucide-react-native';
 import type { ReactNode } from 'react';
 import { Pressable, View, type PressableProps } from 'react-native';
+import { cva } from 'class-variance-authority';
+import { ChevronRight } from 'lucide-react-native';
 
 import { cn } from '@/lib/cn';
 import { toneColor } from '@/theme/tokens';

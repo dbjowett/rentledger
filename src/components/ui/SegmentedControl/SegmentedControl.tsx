@@ -1,6 +1,6 @@
-import type { VariantProps } from 'class-variance-authority';
 import { useEffect, useState } from 'react';
 import { Pressable, View, type LayoutChangeEvent, type ViewProps } from 'react-native';
+import type { VariantProps } from 'class-variance-authority';
 import Animated, {
   Easing,
   useAnimatedStyle,
