@@ -39,6 +39,92 @@ export type Database = {
   }
   public: {
     Tables: {
+      properties: {
+        Row: {
+          address: string
+          created_at: string
+          id: string
+          name: string
+          ownership_pct: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          address: string
+          created_at?: string
+          id?: string
+          name: string
+          ownership_pct?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          address?: string
+          created_at?: string
+          id?: string
+          name?: string
+          ownership_pct?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      units: {
+        Row: {
+          created_at: string
+          id: string
+          label: string
+          property_id: string
+          rent_cents: number | null
+          rent_due_day: number | null
+          rent_due_last_day: boolean
+          rent_start_date: string | null
+          sort_order: number
+          status: string
+          tenant_name: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          label: string
+          property_id: string
+          rent_cents?: number | null
+          rent_due_day?: number | null
+          rent_due_last_day?: boolean
+          rent_start_date?: string | null
+          sort_order?: number
+          status?: string
+          tenant_name?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          label?: string
+          property_id?: string
+          rent_cents?: number | null
+          rent_due_day?: number | null
+          rent_due_last_day?: boolean
+          rent_start_date?: string | null
+          sort_order?: number
+          status?: string
+          tenant_name?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "units_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_settings: {
         Row: {
           created_at: string
@@ -68,7 +154,15 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      create_property: {
+        Args: {
+          p_address: string
+          p_name: string
+          p_ownership_pct?: number
+          p_units: Json
+        }
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never
