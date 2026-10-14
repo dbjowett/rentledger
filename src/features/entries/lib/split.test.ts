@@ -1,6 +1,7 @@
 import {
   basisPointsToPercent,
   evenBasisPoints,
+  evenPercents,
   percentToBasisPoints,
   splitAmounts,
   splitStatus,
@@ -63,5 +64,12 @@ describe('splitStatus', () => {
   it('reports how far off it is', () => {
     expect(splitStatus([2500, 7000])).toEqual({ ok: false, offByPercent: -5 });
     expect(splitStatus([6000, 6000])).toEqual({ ok: false, offByPercent: 20 });
+  });
+});
+
+describe('evenPercents', () => {
+  it('starts a custom split from even shares', () => {
+    expect(evenPercents(['a', 'b', 'c'])).toEqual({ a: '33.33', b: '33.33', c: '33.34' });
+    expect(evenPercents(['a', 'b'])).toEqual({ a: '50', b: '50' });
   });
 });

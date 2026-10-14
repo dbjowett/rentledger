@@ -1,7 +1,8 @@
 import { Tabs } from 'expo-router/js-tabs';
 import { Banknote, Building2, House, Plus, UserRound } from 'lucide-react-native';
 
-import { TabBar, toast, type TabBarAction, type TabBarItem } from '@/components/ui';
+import { TabBar, type TabBarAction, type TabBarItem } from '@/components/ui';
+import { useNewEntry } from '@/features/entries/NewEntryProvider';
 
 const tabs: readonly TabBarItem[] = [
   { key: 'index', label: 'Home', icon: House },
@@ -10,13 +11,14 @@ const tabs: readonly TabBarItem[] = [
   { key: 'profile', label: 'Profile', icon: UserRound },
 ];
 
-const addAction: TabBarAction = {
-  label: 'Add',
-  icon: Plus,
-  onPress: () => toast.show({ variant: 'neutral', message: 'Adding entries is coming soon' }),
-};
-
 export default function TabsLayout() {
+  const newEntry = useNewEntry();
+  const addAction: TabBarAction = {
+    label: 'New entry',
+    icon: Plus,
+    onPress: () => newEntry.open(),
+  };
+
   return (
     <Tabs
       tabBar={({ state, navigation }) => (

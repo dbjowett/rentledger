@@ -25,6 +25,17 @@ function evenBasisPoints(count: number): number[] {
 }
 
 /**
+ * Even shares as typed percentages, keyed by unit id; the starting point for a custom split.
+ * @example evenPercents(['a', 'b', 'c']) // { a: '33.33', b: '33.33', c: '33.34' }
+ */
+function evenPercents(unitIds: readonly string[]): Record<string, string> {
+  const shares = evenBasisPoints(unitIds.length);
+  return Object.fromEntries(
+    unitIds.map((id, index) => [id, basisPointsToPercent(shares[index] ?? 0)]),
+  );
+}
+
+/**
  * Splits an amount by basis points. Each share is rounded down and the last unit takes the
  * leftover cents, so the parts always add up to `amountCents`.
  * @example splitAmounts(10000, [3333, 3333, 3334]) // [3333, 3333, 3334]
@@ -72,6 +83,7 @@ function splitStatus(basisPoints: readonly number[]): SplitStatus {
 export {
   basisPointsToPercent,
   evenBasisPoints,
+  evenPercents,
   percentToBasisPoints,
   type SplitStatus,
   splitAmounts,

@@ -6,6 +6,7 @@ import {
   ActionMenu,
   Button,
   ChipGroup,
+  ConfirmDialog,
   DateField,
   Field,
   SplitBar,
@@ -22,10 +23,12 @@ import { SplitCard, SPLIT_TONES } from '@/features/entries/components/SplitCard'
 import type { SplitMode } from '@/features/entries/lib/entry';
 import { pickReceipt } from '@/features/entries/lib/pickReceipt';
 import { prepareReceipt } from '@/features/entries/lib/prepareReceipt';
-import { basisPointsToPercent, evenBasisPoints } from '@/features/entries/lib/split';
+import { evenPercents } from '@/features/entries/lib/split';
+import { useUserTimeZone } from '@/features/profile/queries';
 import type { IsoDate } from '@/shared/dates';
 import type { Category } from '@/shared/types';
 
+import { type CheckResult, runEntryApiChecks } from './entryApiChecks';
 import { Label, Section } from './parts';
 
 const noop = () => undefined;
@@ -67,11 +70,6 @@ const unitOptions: Array<ChipOption<string>> = [
   { value: 'u2', label: 'Unit 2' },
   { value: 'mine', label: 'My unit', tag: 'Yours' },
 ];
-
-function evenPercents(ids: readonly string[]): Record<string, string> {
-  const shares = evenBasisPoints(ids.length);
-  return Object.fromEntries(ids.map((id, index) => [id, basisPointsToPercent(shares[index] ?? 0)]));
-}
 
 function ChipsDemo() {
   const [property, setProperty] = useState<string | null>('cedar');
@@ -242,10 +240,56 @@ function LiveReceiptDemo() {
   );
 }
 
+function ApiChecksDemo() {
+  const timeZone = useUserTimeZone();
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [running, setRunning] = useState(false);
+  const [results, setResults] = useState<CheckResult[]>([]);
+
+  const run = async () => {
+    setConfirmOpen(false);
+    setRunning(true);
+    setResults(await runEntryApiChecks(timeZone));
+    setRunning(false);
+  };
+
+  return (
+    <View className="gap-3">
+      <Text size="sm" tone="grey">
+        Runs the entry checklist against the real API on your first property with 3+ units. Valid
+        cases save real entries noted "[dev test]".
+      </Text>
+      <Button
+        variant="secondary"
+        label="Run API checks"
+        loading={running}
+        onPress={() => setConfirmOpen(true)}
+      />
+      {results.map((result) => (
+        <Text key={result.name} size="sm" tone={result.ok ? 'success' : 'danger'}>
+          {`${result.ok ? 'PASS' : 'FAIL'} ${result.name}: ${result.detail}`}
+        </Text>
+      ))}
+      <ConfirmDialog
+        open={confirmOpen}
+        title="Save test entries?"
+        message="This adds about 7 real entries, noted [dev test], to one of your properties."
+        confirmLabel="Run"
+        onConfirm={() => void run()}
+        onCancel={() => setConfirmOpen(false)}
+      />
+    </View>
+  );
+}
+
 function EntriesTab() {
   const pdf = 'file:///receipt.pdf';
   return (
     <View>
+      <Section title="API checks">
+        <ApiChecksDemo />
+      </Section>
+
       <Section title="Chips">
         <ChipsDemo />
       </Section>
