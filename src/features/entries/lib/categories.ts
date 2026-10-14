@@ -12,6 +12,22 @@ type OrderedCategories<T> = {
 
 type OrderableCategory = Pick<Category, 'key' | 'name' | 'sortOrder' | 'useCount'>;
 
+/** Shorter names for chips; the full name shows in the "More" list and on the tax form. */
+const CHIP_LABELS: Readonly<Record<string, string>> = {
+  repairs: 'Repairs',
+  property_taxes: 'Property tax',
+  other_expenses: 'Other',
+  management_fees: 'Management',
+};
+
+/**
+ * The label on a category chip.
+ * @example categoryChipLabel({ key: 'repairs', name: 'Repairs and maintenance' }) // 'Repairs'
+ */
+function categoryChipLabel(category: Pick<Category, 'key' | 'name'>): string {
+  return (category.key === null ? undefined : CHIP_LABELS[category.key]) ?? category.name;
+}
+
 /** System categories in their default order come before the user's own. */
 function defaultRank(category: OrderableCategory): number {
   return category.key === null ? Number.MAX_SAFE_INTEGER : category.sortOrder;
@@ -44,4 +60,10 @@ function taxLineLabel(taxLine: Category['taxLine']): string | undefined {
   return taxLine === null ? undefined : `Line ${taxLine.code}`;
 }
 
-export { CATEGORY_CHIP_COUNT, type OrderedCategories, orderCategories, taxLineLabel };
+export {
+  CATEGORY_CHIP_COUNT,
+  categoryChipLabel,
+  type OrderedCategories,
+  orderCategories,
+  taxLineLabel,
+};

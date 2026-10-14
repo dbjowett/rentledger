@@ -154,6 +154,14 @@ function dueDateInMonth(month: MonthStart, due: DueDay): IsoDate {
 }
 
 /**
+ * A calendar day for display.
+ * @example formatDateMedium('2026-10-14') // 'Oct 14, 2026'
+ */
+function formatDateMedium(date: IsoDate): string {
+  return format(parseIsoDate(date), 'MMM d, yyyy');
+}
+
+/**
  * Long month and year for display.
  * @example formatMonthYear('2026-10-01') // 'October 2026'
  */
@@ -186,6 +194,7 @@ export {
   addMonthsTo,
   currentMonthStart,
   dueDateInMonth,
+  formatDateMedium,
   formatDayOrdinal,
   formatMonthShort,
   formatMonthYear,

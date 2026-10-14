@@ -1,4 +1,4 @@
-import { orderCategories, taxLineLabel } from './categories';
+import { categoryChipLabel, orderCategories, taxLineLabel } from './categories';
 
 function category(name: string, key: string | null, sortOrder: number, useCount = 0) {
   return { name, key, sortOrder, useCount };
@@ -50,5 +50,13 @@ describe('taxLineLabel', () => {
   it('labels the T776 line', () => {
     expect(taxLineLabel({ code: '8960', label: 'Repairs and maintenance' })).toBe('Line 8960');
     expect(taxLineLabel(null)).toBeUndefined();
+  });
+});
+
+describe('categoryChipLabel', () => {
+  it('shortens long system names and keeps the rest', () => {
+    expect(categoryChipLabel({ key: 'repairs', name: 'Repairs and maintenance' })).toBe('Repairs');
+    expect(categoryChipLabel({ key: 'utilities', name: 'Utilities' })).toBe('Utilities');
+    expect(categoryChipLabel({ key: null, name: 'Snow removal' })).toBe('Snow removal');
   });
 });
