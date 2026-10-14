@@ -1,6 +1,7 @@
+import { sumBy } from 'es-toolkit';
 import { z } from 'zod';
 
-import { isMonthStart, isWithinMonthsAhead } from './dates';
+import { isDateWithinMonthsAhead, isIsoDate, isMonthStart, isWithinMonthsAhead } from './dates';
 import { isValidTimeZone } from './timeZones';
 
 const timeZone = z.string().trim().refine(isValidTimeZone, 'Unknown time zone');
@@ -93,11 +94,121 @@ const createPropertyBody = propertyBody.superRefine((value, ctx) => {
   }
 });
 
+const ENTRY_KINDS = ['expense', 'income'] as const;
+
+/** $10,000,000, in cents. */
+const MAX_AMOUNT_CENTS = 1_000_000_000;
+
+const FULL_SHARE_BASIS_POINTS = 10_000;
+
+const splitShare = z.object({
+  unit_id: z.uuid(),
+  basis_points: z.number().int().min(1).max(FULL_SHARE_BASIS_POINTS),
+});
+
+/** Where the money belongs: the whole building, one unit, or a split across 2+ units. */
+const entryTarget = z.discriminatedUnion('type', [
+  z.object({ type: z.literal('building') }),
+  z.object({ type: z.literal('unit'), unit_id: z.uuid() }),
+  z.object({
+    type: z.literal('split'),
+    mode: z.enum(['even', 'custom']),
+    units: z.array(splitShare).min(2, 'Pick at least two units to split'),
+  }),
+]);
+
+const entryDate = z
+  .string()
+  .refine(isIsoDate, 'Pick a date')
+  .refine(
+    (value) => isDateWithinMonthsAhead(value, MAX_MONTHS_AHEAD, SERVER_TIME_ZONE),
+    'Pick a date within the next year',
+  );
+
+const createTransactionBody = z
+  .object({
+    kind: z.enum(ENTRY_KINDS),
+    amount_cents: z
+      .number()
+      .int()
+      .positive('Enter an amount above $0')
+      .max(MAX_AMOUNT_CENTS, 'Enter an amount up to $10,000,000'),
+    property_id: z.uuid(),
+    target: entryTarget,
+    category_id: z.uuid(),
+    date: entryDate,
+    is_capital: z.boolean().default(false),
+    note: z.string().trim().max(500).optional(),
+    repeat_monthly: z.boolean().default(false),
+    receipt_id: z.uuid().optional(),
+  })
+  .superRefine((value, ctx) => {
+    if (value.kind === 'income' && value.is_capital) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['is_capital'],
+        message: 'Only expenses can be capital improvements',
+      });
+    }
+    if (value.target.type !== 'split') return;
+    if (value.kind === 'income') {
+      ctx.addIssue({ code: 'custom', path: ['target'], message: 'Income goes to one unit' });
+    }
+    const total = sumBy(value.target.units, (unit) => unit.basis_points);
+    if (total !== FULL_SHARE_BASIS_POINTS) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['target', 'units'],
+        message: 'Split must add up to 100%',
+      });
+    }
+    const unitIds = new Set(value.target.units.map((unit) => unit.unit_id));
+    if (unitIds.size !== value.target.units.length) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['target', 'units'],
+        message: 'Each unit can only appear once in a split',
+      });
+    }
+  });
+
+/** 15 MB, the receipts bucket's limit. */
+const MAX_RECEIPT_BYTES = 15_000_000;
+
+const RECEIPT_MIME_TYPES = ['image/jpeg', 'application/pdf'] as const;
+
+const receiptUploadBody = z.object({
+  mime_type: z.enum(RECEIPT_MIME_TYPES),
+  size_bytes: z.number().int().positive().max(MAX_RECEIPT_BYTES, 'Receipts can be up to 15 MB'),
+  original_file_name: z.string().trim().max(255).optional(),
+});
+
+const entryKindQuery = z.enum(ENTRY_KINDS).optional();
+
 type RentDueBody = z.infer<typeof rentDue>;
 type UnitBody = z.input<typeof unitBody>;
 type CreatePropertyBody = z.input<typeof createPropertyBody>;
+type EntryKind = (typeof ENTRY_KINDS)[number];
+type EntryTargetBody = z.infer<typeof entryTarget>;
+type CreateTransactionBody = z.input<typeof createTransactionBody>;
+type ReceiptMimeType = (typeof RECEIPT_MIME_TYPES)[number];
+type ReceiptUploadBody = z.input<typeof receiptUploadBody>;
 
 export {
+  createTransactionBody,
+  type CreateTransactionBody,
+  ENTRY_KINDS,
+  type EntryKind,
+  entryKindQuery,
+  entryTarget,
+  type EntryTargetBody,
+  FULL_SHARE_BASIS_POINTS,
+  MAX_AMOUNT_CENTS,
+  MAX_RECEIPT_BYTES,
+  RECEIPT_MIME_TYPES,
+  type ReceiptMimeType,
+  receiptUploadBody,
+  type ReceiptUploadBody,
   MAX_MONTHS_AHEAD,
   type CreatePropertyBody,
   type RentDueBody,

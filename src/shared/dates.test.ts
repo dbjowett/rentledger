@@ -1,10 +1,13 @@
 import {
+  addDaysTo,
   addMonthsTo,
   currentMonthStart,
   dueDateInMonth,
   formatDayOrdinal,
   formatMonthShort,
   formatMonthYear,
+  isDateWithinMonthsAhead,
+  isIsoDate,
   isMonthStart,
   isWithinMonthsAhead,
   monthsBetween,
@@ -38,6 +41,21 @@ describe('dates', () => {
     expect(isMonthStart('2026-10-14')).toBe(false);
     expect(isMonthStart('2026-13-01')).toBe(false);
     expect(isMonthStart('Oct 2026')).toBe(false);
+  });
+
+  it('validates calendar dates', () => {
+    expect(isIsoDate('2026-10-14')).toBe(true);
+    expect(isIsoDate('2028-02-29')).toBe(true);
+    expect(isIsoDate('2027-02-29')).toBe(false);
+    expect(isIsoDate('2026-02-30')).toBe(false);
+    expect(isIsoDate('2026-10-1')).toBe(false);
+  });
+
+  it('moves days and limits dates to months ahead', () => {
+    expect(addDaysTo('2026-10-14', -90)).toBe('2026-07-16');
+    expect(addDaysTo('2026-12-31', 1)).toBe('2027-01-01');
+    expect(isDateWithinMonthsAhead('2027-10-01', 12, 'UTC')).toBe(true);
+    expect(isDateWithinMonthsAhead('2027-10-02', 12, 'UTC')).toBe(false);
   });
 
   it('does month arithmetic across years', () => {
