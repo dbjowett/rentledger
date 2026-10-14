@@ -11,7 +11,7 @@ import {
   Radio,
   RadioGroup,
   SegmentedControl,
-  Stepper,
+  NumberStepper,
   Switch,
   Text,
   TextInput,
@@ -109,14 +109,14 @@ function SwitchDemo() {
   );
 }
 
-function StepperDemo() {
+function NumberStepperDemo() {
   const [unitCount, setUnitCount] = useState(2);
   const [share, setShare] = useState(50);
   return (
     <View className="gap-4">
       <View className="flex-row items-center justify-between">
         <Text>Units</Text>
-        <Stepper
+        <NumberStepper
           accessibilityLabel="Units"
           value={unitCount}
           onChange={setUnitCount}
@@ -126,7 +126,7 @@ function StepperDemo() {
       </View>
       <View className="flex-row items-center justify-between">
         <Text>Ownership share</Text>
-        <Stepper
+        <NumberStepper
           accessibilityLabel="Ownership share"
           value={share}
           onChange={setShare}
@@ -136,6 +136,17 @@ function StepperDemo() {
           formatValue={(v) => `${v}%`}
         />
       </View>
+      <Field label="How many rental units?">
+        <NumberStepper
+          accessibilityLabel="Rental units"
+          value={unitCount}
+          onChange={setUnitCount}
+          min={1}
+          max={20}
+          title={unitCount === 1 ? '1 unit' : `${unitCount} units`}
+          description="A house or condo is 1"
+        />
+      </Field>
     </View>
   );
 }
@@ -255,6 +266,9 @@ export function InputsTab() {
       <Section title="MoneyInput">
         <View className="gap-5">
           <MoneyDemo />
+          <Field label="Monthly rent" hint="Small size with a suffix, as in the unit cards">
+            <MoneyInput size="sm" suffix="/mo" cents={145_000} onChangeCents={() => undefined} />
+          </Field>
           <Field label="Repair cost" error="Amount is required" required>
             <MoneyInput cents={null} onChangeCents={() => undefined} />
           </Field>
@@ -270,9 +284,9 @@ export function InputsTab() {
         </Card>
       </Section>
 
-      <Section title="Stepper">
+      <Section title="NumberStepper">
         <Card>
-          <StepperDemo />
+          <NumberStepperDemo />
         </Card>
       </Section>
 

@@ -1,6 +1,7 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 
 import { cn } from '@/lib/cn';
+import { formatCents } from '@/shared/money';
 
 import { Text, type TextProps } from '../Text/Text';
 
@@ -18,21 +19,6 @@ const amountTextVariants = cva('font-mono', {
 type AmountKind = NonNullable<VariantProps<typeof amountTextVariants>['kind']>;
 
 const MINUS = '−';
-
-const formatters = {
-  cents: new Intl.NumberFormat('en-CA', { style: 'currency', currency: 'CAD' }),
-  whole: new Intl.NumberFormat('en-CA', {
-    style: 'currency',
-    currency: 'CAD',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }),
-};
-
-/** Formats cents as CAD, e.g. 124000 → "$1,240.00". Always unsigned. */
-function formatCents(cents: number, hideCents = false) {
-  return (hideCents ? formatters.whole : formatters.cents).format(Math.abs(cents) / 100);
-}
 
 /**
  * Sign rules: income is "+" and expense is "−" (only when `showSign`), regardless of the sign
@@ -81,4 +67,4 @@ function Amount({
   );
 }
 
-export { amountTextVariants, type AmountKind, formatCents, type AmountProps, Amount };
+export { amountTextVariants, type AmountKind, type AmountProps, Amount };

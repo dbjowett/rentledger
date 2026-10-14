@@ -3,12 +3,16 @@ import { Link } from 'expo-router';
 
 import { Avatar, Button, Card, Text } from '@/components/ui';
 import { useAuth } from '@/features/auth/AuthProvider';
+import { AddFirstPropertyCard } from '@/features/properties/AddFirstPropertyCard';
+import { useProperties } from '@/features/properties/queries';
 import { firstName, getProfile } from '@/shared/profile';
 
 export default function Home() {
   const { session } = useAuth();
   const profile = session === null ? null : getProfile(session.user);
   const greetingName = firstName(profile?.name ?? null);
+  const properties = useProperties();
+  const noProperties = properties.data?.length === 0;
 
   return (
     <View className="flex-1 gap-4 bg-surface p-5">
@@ -27,6 +31,7 @@ export default function Home() {
           </View>
         </View>
       </Card>
+      {noProperties ? <AddFirstPropertyCard /> : null}
       {__DEV__ && (
         <Link href="/gallery" asChild>
           <Button variant="link" label="Open component gallery" />

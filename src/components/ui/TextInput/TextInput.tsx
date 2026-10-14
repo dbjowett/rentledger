@@ -12,6 +12,7 @@ import { cn } from '@/lib/cn';
 import { toneColor } from '@/theme/tokens';
 
 import { useField } from '../Field/Field';
+import { Text } from '../Text/Text';
 
 // Border grows to 2px when focused or invalid; padding shrinks by 1px so text doesn't shift.
 const inputContainerVariants = cva('flex-row items-center rounded-tile bg-card', {
@@ -75,10 +76,13 @@ type TextInputProps = RNTextInputProps & {
   /** Error styling without a Field; inside a Field the error comes from it. */
   invalid?: boolean;
   containerClassName?: string;
+  /** Muted text after the value, e.g. "%". */
+  suffix?: string;
 };
 
 function TextInput({
   invalid,
+  suffix,
   editable = true,
   multiline = false,
   className,
@@ -109,6 +113,11 @@ function TextInput({
         {...handlers}
         {...rest}
       />
+      {suffix === undefined ? null : (
+        <Text importantForAccessibility="no" className="ml-1 font-sans text-md text-grey">
+          {suffix}
+        </Text>
+      )}
     </View>
   );
 }
