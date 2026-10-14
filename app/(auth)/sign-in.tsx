@@ -14,7 +14,7 @@ export default function SignInScreen() {
     setBusy(true);
     setError(null);
     const result = await signIn();
-    console.log(result);
+
     if (result.status === 'error') setError(result.message);
     setBusy(false);
   };

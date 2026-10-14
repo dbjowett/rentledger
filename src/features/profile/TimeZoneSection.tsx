@@ -22,7 +22,6 @@ function TimeZoneSection() {
   const me = useMe();
   const updateSettings = useUpdateSettings();
   const [pickerOpen, setPickerOpen] = useState<boolean>(false);
-  console.log(me);
 
   const savedZone = blankToNull(me.data?.settings?.timeZone);
   const phoneZone = deviceTimeZone();
