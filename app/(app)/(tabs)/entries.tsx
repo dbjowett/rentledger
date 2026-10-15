@@ -7,7 +7,6 @@ import { groupEntriesByMonth, type EntryMonth } from '@/features/entries/lib/ent
 import { useNewEntry } from '@/features/entries/NewEntryProvider';
 import { useEntries } from '@/features/entries/queries';
 import { useUserTimeZone } from '@/features/profile/queries';
-import { cn } from '@/lib/cn';
 import { currentMonthStart } from '@/shared/dates';
 import { toneColor } from '@/theme/tokens';
 
@@ -122,6 +121,8 @@ export default function EntriesScreen() {
   if (entries.data.length === 0) return <NoEntries onAdd={() => newEntry.open()} />;
 
   const months = groupEntriesByMonth(entries.data);
+  // One item per month: its entries render together in a single card.
+  const sections = months.map((month) => ({ month, data: [month.data] }));
   const [latest] = months;
   const thisMonth = currentMonthStart(timeZone);
 
@@ -129,8 +130,8 @@ export default function EntriesScreen() {
     <SectionList
       className="flex-1 bg-surface"
       contentContainerClassName="px-screen pb-10 pt-5"
-      sections={months}
-      keyExtractor={(entry) => entry.id}
+      sections={sections}
+      keyExtractor={(monthEntries) => monthEntries[0]?.id ?? 'empty'}
       stickySectionHeadersEnabled
       refreshControl={refreshControl}
       ListHeaderComponent={
@@ -138,22 +139,14 @@ export default function EntriesScreen() {
           <MonthSummary month={latest} current={latest.month === thisMonth} />
         )
       }
-      renderSectionHeader={({ section }) => <MonthHeader month={section} />}
-      renderItem={({ item, index, section }) => {
-        const first = index === 0;
-        const last = index === section.data.length - 1;
-        return (
-          <View
-            className={cn(
-              'overflow-hidden border-x border-line bg-card',
-              first && 'rounded-t-card border-t',
-              last && 'rounded-b-card border-b',
-            )}
-          >
-            <EntryRow entry={item} divider={!last} />
-          </View>
-        );
-      }}
+      renderSectionHeader={({ section }) => <MonthHeader month={section.month} />}
+      renderItem={({ item }) => (
+        <Card padding="none">
+          {item.map((entry, index) => (
+            <EntryRow key={entry.id} entry={entry} divider={index < item.length - 1} />
+          ))}
+        </Card>
+      )}
     />
   );
 }
