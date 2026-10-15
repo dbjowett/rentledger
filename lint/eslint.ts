@@ -191,7 +191,29 @@ export default defineConfig({
         ],
       },
     ],
-    'no-restricted-properties': 'off',
+    'no-restricted-properties': [
+      'error',
+      {
+        property: 'toSorted',
+        message:
+          "Hermes (React Native) doesn't support this ES2023 method; use es-toolkit or a copy.",
+      },
+      {
+        property: 'toReversed',
+        message:
+          "Hermes (React Native) doesn't support this ES2023 method; use es-toolkit or a copy.",
+      },
+      {
+        property: 'toSpliced',
+        message:
+          "Hermes (React Native) doesn't support this ES2023 method; use es-toolkit or a copy.",
+      },
+      {
+        property: 'with',
+        message:
+          "Hermes (React Native) doesn't support this ES2023 method; use es-toolkit or a copy.",
+      },
+    ],
     'no-sequences': 'error',
     'no-undefined': 'off',
     'no-use-before-define': 'off',

@@ -9,6 +9,8 @@ type ChipOption<T extends string> = {
   label: string;
   sublabel?: string;
   disabled?: boolean;
+  /** Small tag after the label, e.g. "Yours". */
+  tag?: string;
 };
 
 type ChipGroupBaseProps<T extends string> = ViewProps & {
@@ -55,6 +57,7 @@ function ChipGroup<T extends string>(props: ChipGroupProps<T>) {
       key={option.value}
       label={option.label}
       sublabel={option.sublabel}
+      tag={option.tag}
       disabled={option.disabled}
       selected={isSelected(option.value)}
       accessibilityRole={props.multiple === true ? 'checkbox' : 'radio'}

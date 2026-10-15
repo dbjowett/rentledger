@@ -1,5 +1,6 @@
 import { TZDate } from '@date-fns/tz';
 import {
+  addDays,
   addMonths,
   differenceInCalendarMonths,
   format,
@@ -34,6 +35,8 @@ const ISO_DATE_FORMAT = 'yyyy-MM-dd';
 
 const MONTH_START_PATTERN = /^\d{4}-(0[1-9]|1[0-2])-01$/;
 
+const ISO_DATE_PATTERN = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
+
 /**
  * Parses a calendar date as local midnight, so date-fns arithmetic never shifts it a day.
  * @example parseIsoDate('2026-10-01') // Oct 1 2026, 00:00 local
@@ -57,6 +60,17 @@ function toIsoDate(date: Date): IsoDate {
  */
 function isMonthStart(value: string): value is MonthStart {
   return MONTH_START_PATTERN.test(value) && isValid(parseIsoDate(value));
+}
+
+/**
+ * True when `value` is a real `YYYY-MM-DD` calendar day.
+ * @example isIsoDate('2026-10-14') // true
+ * @example isIsoDate('2026-02-30') // false
+ */
+function isIsoDate(value: string): value is IsoDate {
+  if (!ISO_DATE_PATTERN.test(value)) return false;
+  const parsed = parseIsoDate(value);
+  return isValid(parsed) && toIsoDate(parsed) === value;
 }
 
 /**
@@ -85,6 +99,14 @@ function toMonthStart(value: IsoDate): MonthStart {
 }
 
 /**
+ * Moves a calendar day forward or back.
+ * @example addDaysTo('2026-10-14', -90) // '2026-07-16'
+ */
+function addDaysTo(date: IsoDate, days: number): IsoDate {
+  return toIsoDate(addDays(parseIsoDate(date), days));
+}
+
+/**
  * Moves a month forward or back.
  * @example addMonthsTo('2026-11-01', 3) // '2027-02-01'
  */
@@ -110,6 +132,16 @@ function isWithinMonthsAhead(month: MonthStart, months: number, timeZone: string
 }
 
 /**
+ * True when `date` is no later than the same day `months` from today in `timeZone`.
+ * Past dates always pass.
+ * @example isDateWithinMonthsAhead('2027-10-14', 12, 'UTC') // true on 2026-10-14
+ */
+function isDateWithinMonthsAhead(date: IsoDate, months: number, timeZone: string): boolean {
+  const today = parseIsoDate(todayIn(timeZone));
+  return date <= toIsoDate(addMonths(today, months));
+}
+
+/**
  * The actual due date of rent for a month. "Last day" resolves to that month's real last day.
  * @example dueDateInMonth('2027-02-01', { type: 'last' }) // '2027-02-28'
  * @example dueDateInMonth('2028-02-01', { type: 'last' }) // '2028-02-29'
@@ -119,6 +151,14 @@ function dueDateInMonth(month: MonthStart, due: DueDay): IsoDate {
   const start = parseIsoDate(month);
   if (due.type === 'last') return toIsoDate(lastDayOfMonth(start));
   return toIsoDate(setDate(start, due.day));
+}
+
+/**
+ * A calendar day for display.
+ * @example formatDateMedium('2026-10-14') // 'Oct 14, 2026'
+ */
+function formatDateMedium(date: IsoDate): string {
+  return format(parseIsoDate(date), 'MMM d, yyyy');
 }
 
 /**
@@ -150,12 +190,16 @@ export {
   type DueDay,
   type IsoDate,
   type MonthStart,
+  addDaysTo,
   addMonthsTo,
   currentMonthStart,
   dueDateInMonth,
+  formatDateMedium,
   formatDayOrdinal,
   formatMonthShort,
   formatMonthYear,
+  isDateWithinMonthsAhead,
+  isIsoDate,
   isMonthStart,
   isWithinMonthsAhead,
   monthsBetween,

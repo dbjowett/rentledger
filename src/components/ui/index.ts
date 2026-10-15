@@ -168,3 +168,9 @@ export {
   wizardHeaderVariants,
 } from './WizardHeader/WizardHeader';
 export type { WizardHeaderProps } from './WizardHeader/WizardHeader';
+export { ActionMenu, actionMenuRowVariants } from './ActionMenu/ActionMenu';
+export type { ActionMenuItem, ActionMenuProps } from './ActionMenu/ActionMenu';
+export { DateField } from './DateField/DateField';
+export type { DateFieldProps } from './DateField/DateField';
+export { SwitchRow, switchRowVariants } from './Switch/SwitchRow';
+export type { SwitchRowProps } from './Switch/SwitchRow';

@@ -7,7 +7,7 @@ import {
 } from 'react-native-keyboard-controller';
 
 import { Button, ConfirmDialog, StickyFooter, toast, WizardHeader } from '@/components/ui';
-import { useMe } from '@/features/profile/queries';
+import { useUserTimeZone } from '@/features/profile/queries';
 import { STEPS, type Step } from '@/features/properties/add/formSchema';
 import { Step1Property } from '@/features/properties/add/Step1Property';
 import { Step2Units } from '@/features/properties/add/Step2Units';
@@ -21,9 +21,7 @@ import { summarizeUnits } from '@/features/properties/lib/units';
 import { useCreateProperty } from '@/features/properties/queries';
 import { ApiRequestError } from '@/lib/api';
 import { formatCentsCompact } from '@/shared/money';
-import { deviceTimeZone } from '@/shared/timeZones';
 
-const FALLBACK_TIME_ZONE = 'America/Toronto';
 const FOOTER_SPACE = 140;
 const SCROLL_MARGIN = 16;
 
@@ -78,8 +76,7 @@ function saveErrorMessage(error: unknown): string {
 }
 
 export default function AddPropertyScreen() {
-  const me = useMe();
-  const timeZone = me.data?.settings.timeZone ?? deviceTimeZone() ?? FALLBACK_TIME_ZONE;
+  const timeZone = useUserTimeZone();
   const form = useAddPropertyForm(timeZone);
   const createProperty = useCreateProperty();
   const navigation = useNavigation();

@@ -6,10 +6,12 @@ function useProperties() {
   return useQuery({ queryKey: propertyKeys.list(), queryFn: propertyApi.list });
 }
 
-function useProperty(id: string) {
+/** One property with its units. Pass null to wait until there's an id. */
+function useProperty(id: string | null) {
   return useQuery({
-    queryKey: propertyKeys.detail(id),
-    queryFn: async () => propertyApi.get(id),
+    queryKey: propertyKeys.detail(id ?? ''),
+    queryFn: async () => propertyApi.get(id ?? ''),
+    enabled: id !== null && id !== '',
   });
 }
 

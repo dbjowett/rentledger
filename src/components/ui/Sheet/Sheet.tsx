@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
-import { View, type LayoutChangeEvent } from 'react-native';
+import { BackHandler, View, type LayoutChangeEvent } from 'react-native';
 import {
   BottomSheetBackdrop,
   BottomSheetFlatList,
@@ -48,6 +48,12 @@ type SheetProps = {
   toolbar?: ReactNode;
   /** 'content' sizes to the content; 'full' keeps a fixed height so it never jumps as content changes. */
   size?: SheetSize;
+  /**
+   * Keeps the sheet open on swipe-down and backdrop taps and calls `onClose` instead, so the
+   * owner can confirm first (e.g. "Discard this entry?"). Cancel and Android back always call
+   * `onClose`.
+   */
+  confirmClose?: boolean;
   /** Set to false when the children bring their own SheetFlatList or SheetSectionList. */
   scrollable?: boolean;
   children: ReactNode;
@@ -66,17 +72,6 @@ function SheetHandle() {
   );
 }
 
-function SheetBackdrop(props: BottomSheetBackdropProps) {
-  return (
-    <BottomSheetBackdrop
-      {...props}
-      appearsOnIndex={0}
-      disappearsOnIndex={-1}
-      pressBehavior="close"
-    />
-  );
-}
-
 function Sheet({
   open,
   onClose,
@@ -87,6 +82,7 @@ function Sheet({
   toolbar,
   size = 'content',
   scrollable = true,
+  confirmClose = false,
   children,
   contentClassName,
 }: SheetProps) {
@@ -102,15 +98,44 @@ function Sheet({
     onClose();
   };
 
+  // Runs after every render so the modal always matches `open`, even if it was dismissed
+  // while its owner still wanted it shown.
   useEffect(() => {
-    if (open) {
+    if (open && !presented.current) {
       presented.current = true;
       ref.current?.present();
-    } else if (presented.current) {
+    } else if (!open && presented.current) {
       presented.current = false;
       ref.current?.dismiss();
     }
+  });
+
+  // Android back closes the top-most open sheet (handlers run newest first).
+  const onCloseRef = useRef(onClose);
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
+  useEffect(() => {
+    if (!open) return undefined;
+    const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
+      onCloseRef.current();
+      return true;
+    });
+    return () => subscription.remove();
   }, [open]);
+
+  const renderBackdrop = useCallback(
+    (props: BottomSheetBackdropProps) => (
+      <BottomSheetBackdrop
+        {...props}
+        appearsOnIndex={0}
+        disappearsOnIndex={-1}
+        pressBehavior={confirmClose ? 'none' : 'close'}
+        onPress={confirmClose ? () => onCloseRef.current() : undefined}
+      />
+    ),
+    [confirmClose],
+  );
 
   const renderFooter = useCallback(
     (props: BottomSheetFooterProps) => (
@@ -162,7 +187,9 @@ function Sheet({
       topInset={insets.top}
       backgroundComponent={SheetBackground}
       handleComponent={null}
-      backdropComponent={SheetBackdrop}
+      backdropComponent={renderBackdrop}
+      enablePanDownToClose={!confirmClose}
+      stackBehavior="push"
       footerComponent={hasFooter ? renderFooter : undefined}
       enableDynamicSizing={size === 'content'}
       snapPoints={size === 'full' ? FULL_SNAP_POINTS : undefined}

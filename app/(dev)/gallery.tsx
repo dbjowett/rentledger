@@ -5,6 +5,7 @@ import { Stack, router, useLocalSearchParams } from 'expo-router';
 import { Text } from '@/components/ui';
 import { ButtonsTab } from '@/dev/gallery/ButtonsTab';
 import { CardsTab } from '@/dev/gallery/CardsTab';
+import { EntriesTab } from '@/dev/gallery/EntriesTab';
 import { FeaturesTab } from '@/dev/gallery/FeaturesTab';
 import { FlowsTab } from '@/dev/gallery/FlowsTab';
 import { FoundationsTab } from '@/dev/gallery/FoundationsTab';
@@ -26,6 +27,7 @@ const tabs = [
   { key: 'inputs', label: 'Inputs', Content: InputsTab },
   { key: 'overlays', label: 'Overlays', Content: OverlaysTab },
   { key: 'flows', label: 'Flows', Content: FlowsTab },
+  { key: 'entries', label: 'Entries', Content: EntriesTab },
   { key: 'features', label: 'Features', Content: FeaturesTab },
 ] as const;
 

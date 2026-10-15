@@ -17,6 +17,7 @@ const splitBarSegmentVariants = cva('h-full rounded-full', {
   variants: {
     tone: {
       accent: 'bg-accent',
+      accentSoft: 'bg-accent/40',
       success: 'bg-success',
       warning: 'bg-warning',
       danger: 'bg-danger',

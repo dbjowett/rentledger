@@ -25,7 +25,16 @@
           "origin": "https://rentledger.expo.app"
         }
       ],
-      "@react-native-google-signin/google-signin"
+      "@react-native-google-signin/google-signin",
+      "@react-native-community/datetimepicker",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Rent Ledger uses your photos to attach receipts to entries.",
+          "cameraPermission": "Rent Ledger uses the camera to photograph receipts.",
+          "microphonePermission": false
+        }
+      ]
     ],
     "orientation": "portrait",
     "icon": "./assets/icon.png",

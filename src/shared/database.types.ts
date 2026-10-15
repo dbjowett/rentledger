@@ -39,6 +39,75 @@ export type Database = {
   }
   public: {
     Tables: {
+      categories: {
+        Row: {
+          archived_at: string | null
+          created_at: string
+          id: string
+          is_system: boolean
+          key: string | null
+          kind: string
+          name: string
+          sort_order: number
+          user_id: string | null
+        }
+        Insert: {
+          archived_at?: string | null
+          created_at?: string
+          id?: string
+          is_system?: boolean
+          key?: string | null
+          kind: string
+          name: string
+          sort_order?: number
+          user_id?: string | null
+        }
+        Update: {
+          archived_at?: string | null
+          created_at?: string
+          id?: string
+          is_system?: boolean
+          key?: string | null
+          kind?: string
+          name?: string
+          sort_order?: number
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      category_tax_lines: {
+        Row: {
+          category_id: string
+          jurisdiction: string
+          tax_line_id: string | null
+        }
+        Insert: {
+          category_id: string
+          jurisdiction: string
+          tax_line_id?: string | null
+        }
+        Update: {
+          category_id?: string
+          jurisdiction?: string
+          tax_line_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "category_tax_lines_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "category_tax_lines_tax_line_id_fkey"
+            columns: ["tax_line_id"]
+            isOneToOne: false
+            referencedRelation: "tax_lines"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       properties: {
         Row: {
           address: string
@@ -68,6 +137,294 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      receipts: {
+        Row: {
+          file_key: string
+          id: string
+          mime_type: string
+          original_file_name: string | null
+          property_id: string | null
+          size_bytes: number
+          transaction_id: string | null
+          uploaded_at: string
+          user_id: string
+        }
+        Insert: {
+          file_key: string
+          id?: string
+          mime_type: string
+          original_file_name?: string | null
+          property_id?: string | null
+          size_bytes: number
+          transaction_id?: string | null
+          uploaded_at?: string
+          user_id?: string
+        }
+        Update: {
+          file_key?: string
+          id?: string
+          mime_type?: string
+          original_file_name?: string | null
+          property_id?: string | null
+          size_bytes?: number
+          transaction_id?: string | null
+          uploaded_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "receipts_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "receipts_transaction_id_fkey"
+            columns: ["transaction_id"]
+            isOneToOne: false
+            referencedRelation: "transactions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      recurring_rules: {
+        Row: {
+          active: boolean
+          amount_cents: number
+          category_id: string
+          created_at: string
+          due_day: number | null
+          due_last_day: boolean
+          end_date: string | null
+          frequency: string
+          id: string
+          is_capital: boolean
+          kind: string
+          note: string | null
+          property_id: string
+          split_template: Json | null
+          start_date: string
+          unit_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          active?: boolean
+          amount_cents: number
+          category_id: string
+          created_at?: string
+          due_day?: number | null
+          due_last_day?: boolean
+          end_date?: string | null
+          frequency?: string
+          id?: string
+          is_capital?: boolean
+          kind: string
+          note?: string | null
+          property_id: string
+          split_template?: Json | null
+          start_date: string
+          unit_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          active?: boolean
+          amount_cents?: number
+          category_id?: string
+          created_at?: string
+          due_day?: number | null
+          due_last_day?: boolean
+          end_date?: string | null
+          frequency?: string
+          id?: string
+          is_capital?: boolean
+          kind?: string
+          note?: string | null
+          property_id?: string
+          split_template?: Json | null
+          start_date?: string
+          unit_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recurring_rules_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recurring_rules_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recurring_rules_unit_id_fkey"
+            columns: ["unit_id"]
+            isOneToOne: false
+            referencedRelation: "units"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tax_lines: {
+        Row: {
+          code: string
+          id: string
+          jurisdiction: string
+          kind: string
+          label: string
+        }
+        Insert: {
+          code: string
+          id: string
+          jurisdiction: string
+          kind: string
+          label: string
+        }
+        Update: {
+          code?: string
+          id?: string
+          jurisdiction?: string
+          kind?: string
+          label?: string
+        }
+        Relationships: []
+      }
+      transaction_splits: {
+        Row: {
+          amount_cents: number
+          basis_points: number
+          transaction_id: string
+          unit_id: string
+          user_id: string
+        }
+        Insert: {
+          amount_cents: number
+          basis_points: number
+          transaction_id: string
+          unit_id: string
+          user_id?: string
+        }
+        Update: {
+          amount_cents?: number
+          basis_points?: number
+          transaction_id?: string
+          unit_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transaction_splits_transaction_id_fkey"
+            columns: ["transaction_id"]
+            isOneToOne: false
+            referencedRelation: "transactions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transaction_splits_unit_id_fkey"
+            columns: ["unit_id"]
+            isOneToOne: false
+            referencedRelation: "units"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      transactions: {
+        Row: {
+          amount_cents: number
+          category_id: string
+          created_at: string
+          date: string
+          id: string
+          is_capital: boolean
+          kind: string
+          note: string | null
+          occurrence_date: string | null
+          property_id: string
+          receipt_not_needed: boolean
+          recurring_rule_id: string | null
+          source: string
+          status: string
+          unit_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount_cents: number
+          category_id: string
+          created_at?: string
+          date: string
+          id?: string
+          is_capital?: boolean
+          kind: string
+          note?: string | null
+          occurrence_date?: string | null
+          property_id: string
+          receipt_not_needed?: boolean
+          recurring_rule_id?: string | null
+          source?: string
+          status?: string
+          unit_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          amount_cents?: number
+          category_id?: string
+          created_at?: string
+          date?: string
+          id?: string
+          is_capital?: boolean
+          kind?: string
+          note?: string | null
+          occurrence_date?: string | null
+          property_id?: string
+          receipt_not_needed?: boolean
+          recurring_rule_id?: string | null
+          source?: string
+          status?: string
+          unit_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transactions_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transactions_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transactions_recurring_rule_id_fkey"
+            columns: ["recurring_rule_id"]
+            isOneToOne: false
+            referencedRelation: "recurring_rules"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transactions_unit_id_fkey"
+            columns: ["unit_id"]
+            isOneToOne: false
+            referencedRelation: "units"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       units: {
         Row: {
@@ -163,6 +520,7 @@ export type Database = {
         }
         Returns: string
       }
+      create_transaction: { Args: { p: Json }; Returns: string }
     }
     Enums: {
       [_ in never]: never

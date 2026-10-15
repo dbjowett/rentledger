@@ -1,7 +1,9 @@
 import { ActivityIndicator, ScrollView, View } from 'react-native';
 import { Stack, useLocalSearchParams } from 'expo-router';
+import { Plus } from 'lucide-react-native';
 
-import { Banner, Card, ListRow, Tag, Text } from '@/components/ui';
+import { Banner, Button, Card, ListRow, Tag, Text } from '@/components/ui';
+import { useNewEntry } from '@/features/entries/NewEntryProvider';
 import { formatRentDue, UNIT_STATUS_TAGS } from '@/features/properties/lib/units';
 import { useProperty } from '@/features/properties/queries';
 import { formatMonthYear } from '@/shared/dates';
@@ -26,6 +28,7 @@ function unitMeta(unit: Unit): string {
 export default function PropertyScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const property = useProperty(id);
+  const newEntry = useNewEntry();
 
   if (property.isPending) {
     return (
@@ -66,6 +69,13 @@ export default function PropertyScreen() {
           {`${address} · ${summary}`}
         </Text>
       </View>
+
+      <Button
+        variant="secondary"
+        leftIcon={Plus}
+        label="Add entry"
+        onPress={() => newEntry.open({ propertyId: id })}
+      />
 
       <Card padding="none">
         <Card.Header title={single ? 'Rent' : 'Units'} className="mb-0 px-4 pt-4" />
