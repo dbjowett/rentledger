@@ -3,6 +3,7 @@ import type { EntryKind } from '@/shared/schemas';
 import type {
   CategoryResponse,
   CreateTransactionInput,
+  EntryListItemResponse,
   ReceiptUploadResponse,
   TransactionResponse,
 } from '@/shared/types';
@@ -15,10 +16,13 @@ type ReceiptUploadInput = {
 
 const entryKeys = {
   transactions: ['transactions'] as const,
+  list: (propertyId?: string) => ['transactions', 'list', propertyId ?? 'all'] as const,
   categories: (kind: EntryKind) => ['categories', kind] as const,
 };
 
 const entryApi = {
+  list: async (propertyId?: string) =>
+    api<EntryListItemResponse[]>('/api/transactions', { query: { propertyId } }),
   categories: async (kind: EntryKind) =>
     api<CategoryResponse[]>('/api/categories', { query: { kind } }),
   create: async (input: CreateTransactionInput) =>

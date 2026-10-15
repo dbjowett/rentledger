@@ -95,6 +95,28 @@ type TransactionResponse = Omit<TransactionRow, 'user_id' | 'kind'> & {
   splits: TransactionSplitResponse[];
 };
 
+/** Where an entry's money went, for display. */
+type EntryPlacementResponse =
+  | { type: 'property' }
+  | { type: 'building' }
+  | { type: 'unit'; unit_label: string }
+  | { type: 'split'; unit_labels: string[] };
+
+/** One row in the entries list. */
+type EntryListItemResponse = {
+  id: string;
+  kind: EntryKind;
+  amount_cents: number;
+  date: string;
+  note: string | null;
+  is_capital: boolean;
+  is_recurring: boolean;
+  has_receipt: boolean;
+  property: { id: string; name: string };
+  category: { key: string | null; name: string };
+  placement: EntryPlacementResponse;
+};
+
 type ReceiptUploadResponse = {
   receipt_id: string;
   /** Storage path to upload to, `{userId}/{year}/{receiptId}.{jpg|pdf}`. */
@@ -125,10 +147,16 @@ type Category = Camel<CategoryResponse>;
 type Transaction = Camel<TransactionResponse>;
 type TransactionSplit = Camel<TransactionSplitResponse>;
 type ReceiptUpload = Camel<ReceiptUploadResponse>;
+type EntryListItem = Camel<EntryListItemResponse>;
+type EntryPlacement = Camel<EntryPlacementResponse>;
 type CreateTransactionInput = Camel<CreateTransactionBody>;
 
 export type {
   ApiError,
+  EntryListItem,
+  EntryListItemResponse,
+  EntryPlacement,
+  EntryPlacementResponse,
   Category,
   CategoryResponse,
   CreateTransactionInput,

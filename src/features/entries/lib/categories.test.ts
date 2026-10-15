@@ -17,7 +17,7 @@ const defaults = [
 
 describe('orderCategories', () => {
   it('shows the defaults first when there is no history', () => {
-    const { top, rest } = orderCategories(defaults.toReversed());
+    const { top, rest } = orderCategories([...defaults].reverse());
     expect(top.map((c) => c.key)).toEqual([
       'repairs',
       'utilities',

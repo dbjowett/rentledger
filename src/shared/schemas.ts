@@ -185,6 +185,13 @@ const receiptUploadBody = z.object({
 
 const entryKindQuery = z.enum(ENTRY_KINDS).optional();
 
+const MAX_ENTRY_PAGE = 200;
+
+const entryListQuery = z.object({
+  property_id: z.uuid().optional(),
+  limit: z.coerce.number().int().min(1).max(MAX_ENTRY_PAGE).default(100),
+});
+
 type RentDueBody = z.infer<typeof rentDue>;
 type UnitBody = z.input<typeof unitBody>;
 type CreatePropertyBody = z.input<typeof createPropertyBody>;
@@ -200,6 +207,7 @@ export {
   ENTRY_KINDS,
   type EntryKind,
   entryKindQuery,
+  entryListQuery,
   entryTarget,
   type EntryTargetBody,
   FULL_SHARE_BASIS_POINTS,

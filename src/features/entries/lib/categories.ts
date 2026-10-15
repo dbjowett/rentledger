@@ -1,3 +1,5 @@
+import { orderBy } from 'es-toolkit';
+
 import type { Category } from '@/shared/types';
 
 /** How many categories show as chips before "More". */
@@ -33,13 +35,6 @@ function defaultRank(category: OrderableCategory): number {
   return category.key === null ? Number.MAX_SAFE_INTEGER : category.sortOrder;
 }
 
-function compareCategories(a: OrderableCategory, b: OrderableCategory): number {
-  if (a.useCount !== b.useCount) return b.useCount - a.useCount;
-  const rank = defaultRank(a) - defaultRank(b);
-  if (rank !== 0) return rank;
-  return a.name.localeCompare(b.name);
-}
-
 /**
  * Orders categories for the picker: most used in the last 90 days first, then the default
  * order, then by name. Before there's any history, the defaults lead.
@@ -48,7 +43,11 @@ function orderCategories<T extends OrderableCategory>(
   categories: readonly T[],
   chipCount = CATEGORY_CHIP_COUNT,
 ): OrderedCategories<T> {
-  const ordered = categories.toSorted(compareCategories);
+  const ordered = orderBy(
+    categories,
+    [(category) => category.useCount, defaultRank, (category) => category.name.toLowerCase()],
+    ['desc', 'asc', 'asc'],
+  );
   return { top: ordered.slice(0, chipCount), rest: ordered.slice(chipCount) };
 }
 

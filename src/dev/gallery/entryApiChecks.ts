@@ -1,3 +1,5 @@
+import { sortBy } from 'es-toolkit';
+
 import { entryApi } from '@/features/entries/api';
 import { evenBasisPoints } from '@/features/entries/lib/split';
 import { propertyApi } from '@/features/properties/api';
@@ -108,7 +110,9 @@ async function runEntryApiChecks(timeZone: string): Promise<CheckResult[]> {
         },
       },
       (saved) => {
-        const amounts = saved.splits.map((split) => split.amountCents).toSorted((x, y) => x - y);
+        const amounts = sortBy(saved.splits, [(split) => split.amountCents]).map(
+          (split) => split.amountCents,
+        );
         return amounts.join('/') === '3333/3333/3334' ? null : `got ${amounts.join('/')}`;
       },
     ),
@@ -126,7 +130,9 @@ async function runEntryApiChecks(timeZone: string): Promise<CheckResult[]> {
         },
       },
       (saved) => {
-        const amounts = saved.splits.map((split) => split.amountCents).toSorted((x, y) => x - y);
+        const amounts = sortBy(saved.splits, [(split) => split.amountCents]).map(
+          (split) => split.amountCents,
+        );
         return amounts.join('/') === '2500/7500' ? null : `got ${amounts.join('/')}`;
       },
     ),

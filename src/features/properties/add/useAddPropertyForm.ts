@@ -84,7 +84,9 @@ function useAddPropertyForm(timeZone: string) {
     const units = form.getValues('units');
     const current = units[index];
     if (current === undefined) return;
-    form.setValue('units', units.with(index, { ...current, ...patch }), options);
+    const next = [...units];
+    next[index] = { ...current, ...patch };
+    form.setValue('units', next, options);
     recheck();
   };
 

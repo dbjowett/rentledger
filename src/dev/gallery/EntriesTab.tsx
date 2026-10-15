@@ -15,6 +15,7 @@ import {
   type ChipOption,
 } from '@/components/ui';
 import { CategoryPicker } from '@/features/entries/components/CategoryPicker';
+import { EntryRow } from '@/features/entries/components/EntryRow';
 import {
   ReceiptPicker,
   type ReceiptPickerState,
@@ -26,7 +27,7 @@ import { prepareReceipt } from '@/features/entries/lib/prepareReceipt';
 import { evenPercents } from '@/features/entries/lib/split';
 import { useUserTimeZone } from '@/features/profile/queries';
 import type { IsoDate } from '@/shared/dates';
-import type { Category } from '@/shared/types';
+import type { Category, EntryListItem } from '@/shared/types';
 
 import { type CheckResult, runEntryApiChecks } from './entryApiChecks';
 import { Label, Section } from './parts';
@@ -282,12 +283,76 @@ function ApiChecksDemo() {
   );
 }
 
+function sampleEntry(overrides: Partial<EntryListItem>): EntryListItem {
+  return {
+    id: 'sample',
+    kind: 'expense',
+    amountCents: 24_000,
+    date: '2026-10-08',
+    note: null,
+    isCapital: false,
+    isRecurring: false,
+    hasReceipt: false,
+    property: { id: 'p', name: 'Cedar Row' },
+    category: { key: 'repairs', name: 'Repairs and maintenance' },
+    placement: { type: 'building' },
+    ...overrides,
+  };
+}
+
+const sampleEntries: EntryListItem[] = [
+  sampleEntry({
+    id: 'rent',
+    kind: 'income',
+    amountCents: 145_000,
+    date: '2026-10-01',
+    category: { key: 'rent', name: 'Rent' },
+    placement: { type: 'unit', unitLabel: 'Unit 1' },
+    isRecurring: true,
+  }),
+  sampleEntry({
+    id: 'repair',
+    note: 'Leaky faucet, shared line',
+    hasReceipt: true,
+    placement: { type: 'split', unitLabels: ['Unit 1', 'Unit 2'] },
+  }),
+  sampleEntry({
+    id: 'hydro',
+    amountCents: 14_320,
+    category: { key: 'utilities', name: 'Utilities' },
+    isRecurring: true,
+    hasReceipt: true,
+  }),
+  sampleEntry({
+    id: 'roof',
+    amountCents: 1_500_000,
+    isCapital: true,
+    note: 'New roof',
+    property: { id: 'm', name: 'Maplewood House' },
+    placement: { type: 'property' },
+  }),
+  sampleEntry({
+    id: 'tax',
+    amountCents: 312_500,
+    category: { key: 'property_taxes', name: 'Property taxes' },
+    placement: { type: 'split', unitLabels: ['Unit 1', 'Unit 2', 'Unit 3'] },
+  }),
+];
+
 function EntriesTab() {
   const pdf = 'file:///receipt.pdf';
   return (
     <View>
       <Section title="API checks">
         <ApiChecksDemo />
+      </Section>
+
+      <Section title="EntryRow">
+        <View className="overflow-hidden rounded-card border border-line bg-card">
+          {sampleEntries.map((entry, index) => (
+            <EntryRow key={entry.id} entry={entry} divider={index < sampleEntries.length - 1} />
+          ))}
+        </View>
       </Section>
 
       <Section title="Chips">

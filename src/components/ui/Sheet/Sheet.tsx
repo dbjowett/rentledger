@@ -98,15 +98,17 @@ function Sheet({
     onClose();
   };
 
+  // Runs after every render so the modal always matches `open`, even if it was dismissed
+  // while its owner still wanted it shown.
   useEffect(() => {
-    if (open) {
+    if (open && !presented.current) {
       presented.current = true;
       ref.current?.present();
-    } else if (presented.current) {
+    } else if (!open && presented.current) {
       presented.current = false;
       ref.current?.dismiss();
     }
-  }, [open]);
+  });
 
   // Android back closes the top-most open sheet (handlers run newest first).
   const onCloseRef = useRef(onClose);
@@ -187,6 +189,7 @@ function Sheet({
       handleComponent={null}
       backdropComponent={renderBackdrop}
       enablePanDownToClose={!confirmClose}
+      stackBehavior="push"
       footerComponent={hasFooter ? renderFooter : undefined}
       enableDynamicSizing={size === 'content'}
       snapPoints={size === 'full' ? FULL_SNAP_POINTS : undefined}

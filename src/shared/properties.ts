@@ -1,4 +1,4 @@
-import { sumBy } from 'es-toolkit';
+import { sortBy, sumBy } from 'es-toolkit';
 
 import type {
   PropertyResponse,
@@ -46,9 +46,7 @@ function withoutUserId(row: PropertyRow): Omit<PropertyRow, 'user_id'> {
 function toPropertyResponse(row: PropertyRow, units: UnitRow[]): PropertyResponse {
   return {
     ...withoutUserId(row),
-    units: units
-      .toSorted((a, b) => a.sort_order - b.sort_order)
-      .map((unit) => toUnitResponse(unit)),
+    units: sortBy(units, [(unit) => unit.sort_order]).map((unit) => toUnitResponse(unit)),
   };
 }
 

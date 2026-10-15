@@ -7,6 +7,14 @@ import { entryApi, entryKeys } from './api';
 
 const CATEGORY_STALE_MS = 5 * 60 * 1000;
 
+/** Confirmed entries, newest first; all properties unless one is given. */
+function useEntries(propertyId?: string) {
+  return useQuery({
+    queryKey: entryKeys.list(propertyId),
+    queryFn: async () => entryApi.list(propertyId),
+  });
+}
+
 function useCategories(kind: EntryKind) {
   return useQuery({
     queryKey: entryKeys.categories(kind),
@@ -29,4 +37,4 @@ function useCreateTransaction() {
   });
 }
 
-export { useCategories, useCreateTransaction };
+export { useCategories, useCreateTransaction, useEntries };
